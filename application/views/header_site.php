@@ -23,6 +23,9 @@
         <script src="<?php echo base_url(); ?>JS/validate_common.js"></script>
         <script src="<?php echo base_url(); ?>JS/validation.js"></script>
         <script src="<?php echo base_url(); ?>JS/core.js"></script>
+        <style>
+            label.error{color:red};
+        </style>
     </head>
 
     <body>
