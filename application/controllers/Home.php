@@ -101,5 +101,31 @@ class Home extends CI_Controller {
         $this->session->sess_destroy();
         redirect('home/login', 'refresh');
     }
+    public function getemail() {
 
+        		error_reporting(-1);
+		ini_set('display_errors', 1);
+                
+        $config = array(
+            'protocol' => 'smtp',
+            'smtp_host' => 'ssl://smtp.googlemail.com',
+            'smtp_port' => 465,
+            'smtp_user' => 'rahul.mohan@ipsrsolutions.com',
+            'smtp_pass' => 'ipsr@rahulvm',
+            'mailtype' => 'html',
+            'charset' => 'iso-8859-1'
+        );
+        
+        $this->load->library('email', $config);
+        
+        $this->email->set_newline("\r\n");
+
+        $this->email->from('rahul.mohan@ipsrsolutions.com', 'Rahul');
+        $this->email->to('rahul.vmohan@gmail.com');
+
+        $this->email->subject('Email Test');
+        $this->email->message('Testing the email class.');  
+        $result = $this->email->send();
+        echo $this->email->print_debugger();
+    }
 }
