@@ -45,7 +45,7 @@
                             </div>
                             
                             <button type="submit" class="btn btn-info btn-fill pull-right">Login</button>
-                            <a href="forget_password.php">Forget Password</a> 
+                            <a href="<?php echo base_url('home/forget_password'); ?>">Forget Password</a> 
                             <div class="clearfix"></div>
                         </form>
                     </div>

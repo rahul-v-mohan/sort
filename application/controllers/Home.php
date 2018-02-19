@@ -30,25 +30,14 @@ class Home extends CI_Controller {
         $this->load->view('aboutus.php');
         $this->load->view('footer.php');
     }
-
+/*
+ * Login
+ */
     public function login() {
         $this->load->view('header_site.php', ['menu' => $this->menu]);
         $this->load->view('login.php');
         $this->load->view('footer.php');
     }
-
-    public function donar_registration() {
-        $this->load->view('header_site.php', ['menu' => $this->menu]);
-        $this->load->view('donar_registration.php', ['menu' => $this->menu]);
-        $this->load->view('footer.php');
-    }
-
-    public function contact() {
-        $this->load->view('header_site.php', ['menu' => $this->menu]);
-        $this->load->view('contact.php');
-        $this->load->view('footer.php');
-    }
-
     public function logincheck() {
         $data = array(
             'email' => $this->input->post('email'),
@@ -94,6 +83,68 @@ class Home extends CI_Controller {
              }
         }
         
+    }
+    ///////////////////////////////////////////////////////////////////////////////
+    public function donar_registration($method='insert',$id =0) {
+        $data['form_method'] = 'insert';
+        $data['form_data'] = [
+                                'name' =>'',
+                                'dob' =>'',
+                                'email' => '',
+                                'mobile' =>'',
+                                'gender' =>'',
+                                'status' => '1',
+                                'house_name' =>'',            
+                                'location' =>'',            
+                                'district' =>'',            
+                                'state' =>'',            
+                                'id' => '0' ,
+        ];
+        
+        if(!empty($id)){
+            $fields = [
+                'table' => 'user',
+                'select' => array_keys($data['form_data']), 
+                'where' => ['id' =>$id], 
+                'where_in' => [], 
+                'like' =>  [], 
+                'group_by' => '', 
+                'order_by' => '', 
+                'limit' =>  [],];
+            $result = $this->common->table_details($fields);
+                         if ($result->num_rows() == 0) {
+                 $data['form_data'] = $result->row_array();
+                 $data['form_method'] = 'updation';
+                         }
+        }
+        
+        
+        $this->load->view('header_site.php', ['menu' => $this->menu]);
+        $this->load->view('donar_registration.php', $data);
+        $this->load->view('footer.php');
+    }
+/*
+ * Forget Password
+ */
+    public function forget_password() {
+        $this->load->view('header_site.php', ['menu' => $this->menu]);
+        $this->load->view('forget_password.php');
+        $this->load->view('footer.php');
+    }
+    public function forget_password_check() {
+                $data = array(
+            'email' => $this->input->post('email'),
+        );
+        $this->load->view('header_site.php', ['menu' => $this->menu]);
+        $this->load->view('forget_password.php');
+        $this->load->view('footer.php');
+    }
+    
+/////////////////////////////////////////////////////////////
+    public function contact() {
+        $this->load->view('header_site.php', ['menu' => $this->menu]);
+        $this->load->view('contact.php');
+        $this->load->view('footer.php');
     }
 
     public function logout() {

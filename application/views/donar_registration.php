@@ -3,34 +3,15 @@ $page_title = 'Donar Registration';
 $table_name = 'Donar Details';
 $action_page = 'PROCESS/user_reg_process.php';
 
-$name ='';
-$email ='';
-$mobile ='';
-$gender_male_check ='';
-$gender_female_check ='';
+$name = $form_data['name'];
+$dob = $form_data['dob'];
+$email =$form_data['email'];
+$mobile =$form_data['mobile'];
+$gender_male_check =($form_data['gender_male_check'] == 'Male')?'selected':'';
+$gender_female_check =($form_data['gender_female_check'] == 'Female')?'selected':'';
 $status = '1';
-$status_check = '';
-$id = '0';
-$method ='insert';
-if(!empty($_GET['action']) && !empty($_GET['id']) ){
-    if($_GET['action'] == 'edit'){
-        
-        $method ='update';
-        $page_title = $page_title.' - Update';
-        
-       $result =$query->select('user','*',['id'=>$_GET['id']]) ;
-       $row=  mysqli_fetch_array($result);
-        $id =$row['id'];
-        $name =$row['name'];
-        $email =$row['email'];
-        $mobile =$row['mobile'];
-        $gender_male_check =($row['gender'] == 'Male')?'checked':'';
-        $gender_female_check =($row['gender'] == 'Female')?'checked':'';
-        $status = $row['status'];
-        $status_check = ($row['status'] == '1')?'checked':'';
-       
-    }
-}
+$status_check = ($form_data['status'] == '1')?'checked':'';;
+$id = $form_data['id'];
 ?>
 <!-- End Navbar -->
 <div class="content">
@@ -58,7 +39,7 @@ if(!empty($_GET['action']) && !empty($_GET['id']) ){
 
                         <form id="user_registration" method="post" action="<?php echo $action_page; ?>">
                             <input type="hidden" class="form-control"  name="id" value="<?php echo $id; ?>">
-                            <input type="hidden" class="form-control"  name="method" value="<?php echo $method; ?>">
+                            <input type="hidden" class="form-control"  name="method" value="<?php echo $form_action; ?>">
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
