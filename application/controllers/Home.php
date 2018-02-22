@@ -123,6 +123,64 @@ class Home extends CI_Controller {
         $this->load->view('donar_registration.php', $data);
         $this->load->view('footer.php');
     }
+    public function donar_registration_process() {
+        
+        $data = array(
+            'email' => $this->input->post('email'),
+            'name' =>  $this->input->post('name'),
+            'dob' =>$this->input->post('dob'),
+            'mobile' =>$this->input->post('mobile'),
+            'gender' =>$this->input->post('gender'),
+            'status' => $this->input->post('status'),
+            'house_name' =>$this->input->post('house_name'),            
+            'location' =>$this->input->post('location'),            
+            'district' =>$this->input->post('district'),            
+            'state' =>$this->input->post('state'),            
+        );
+        $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+        $this->form_validation->set_rules('name', 'Name', 'required');
+        $this->form_validation->set_rules('dob', 'Date Of Birth', 'required');
+        $this->form_validation->set_rules('mobile', 'Mobile', 'required|exact_length[10]|integer');
+        $this->form_validation->set_rules('house_name', 'House Name', 'required');
+        $this->form_validation->set_rules('location', 'Location', 'required');
+        $this->form_validation->set_rules('district', 'District', 'required');
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->load->view('header_site.php', ['menu' => $this->menu]);
+            $this->load->view('login.php');
+            $this->load->view('footer.php');
+        } else {
+            $fields = [
+                'table' => 'user',
+                'select' => '*', 
+                'where' => $data, 
+                'where_in' => [], 
+                'like' =>  [], 
+                'group_by' => '', 
+                'order_by' => '', 
+                'limit' =>  [],];
+            $result = $this->common->table_details($fields);
+             if ($result->num_rows() == 0) {
+                 $data['USER'] = $result->row_array();
+                 $this->session->set_userdata($data);
+                 
+                 if($data['USER']['role'] == 'admin'){
+                     redirect('home/login', 'refresh');
+                 }elseif($data['USER']['role'] == 'donar'){
+                     redirect('home/login', 'refresh');
+                 }elseif($data['USER']['role'] == 'hospital'){
+                     redirect('home/login', 'refresh'); 
+                 }else{
+                     $this->session->unset_userdata('USER');
+                      $this->session->set_flashdata('msg', 'Something Went wrong'); 
+                     redirect('home/login', 'refresh');
+                 }
+                 
+             }else{
+                $this->session->set_flashdata('msg', 'Enter Valid Username or Password'); 
+             }
+        }
+    }
 /*
  * Forget Password
  */

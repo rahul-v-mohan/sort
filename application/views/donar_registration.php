@@ -1,14 +1,15 @@
 <?php
 $page_title = 'Donar Registration';
 $table_name = 'Donar Details';
-$action_page = 'PROCESS/user_reg_process.php';
+$action_page = 'home/donar_registration_process';
+
 
 $name = $form_data['name'];
 $dob = $form_data['dob'];
 $email =$form_data['email'];
 $mobile =$form_data['mobile'];
-$gender_male_check =($form_data['gender_male_check'] == 'Male')?'selected':'';
-$gender_female_check =($form_data['gender_female_check'] == 'Female')?'selected':'';
+$gender_male_check =($form_data['gender'] == 'Male')?'selected':'';
+$gender_female_check =($form_data['gender'] == 'Female')?'selected':'';
 $status = '1';
 $status_check = ($form_data['status'] == '1')?'checked':'';;
 $id = $form_data['id'];
@@ -37,9 +38,9 @@ $id = $form_data['id'];
                     </div>
                     <div class="card-body">
 
-                        <form id="user_registration" method="post" action="<?php echo $action_page; ?>">
+                        <form id="user_registration" method="post" action="<?php echo base_url($action_page); ?>">
                             <input type="hidden" class="form-control"  name="id" value="<?php echo $id; ?>">
-                            <input type="hidden" class="form-control"  name="method" value="<?php echo $form_action; ?>">
+                            <input type="hidden" class="form-control"  name="method" value="<?php echo $form_method; ?>">
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
