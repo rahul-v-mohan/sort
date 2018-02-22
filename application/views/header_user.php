@@ -30,18 +30,18 @@
                     <ul class="nav">
                         <?php
                         if (!empty($menu)) {
-                            foreach ($menu as $title => $url) {
+                            foreach ($menu as $title => $temp) {
                                 ?>
                                 <li>
-                                    <a class="nav-link" href="<?php echo base_url().$url; ?> ">
-                                        <!--<i class="nc-icon nc-chart-pie-35"></i>-->
+                                    <a class="nav-link" href="<?php echo base_url().$temp['url']; ?> ">
+                                        <i class="nc-icon <?php echo $temp['class']; ?>"></i>
                                         <p><?php echo $title; ?></p>
                                     </a>
                                 </li>
                                 <?php
                             }
                         }
-                        ?>       
+                        ?>   
                     </ul>
                 </div>
             </div>
@@ -49,7 +49,7 @@
                 <!-- Navbar -->
                 <nav class="navbar navbar-expand-lg " color-on-scroll="500">
                     <div class=" container-fluid  ">
-                        <a class="navbar-brand" href="#"> <?php echo $_SESSION['USER']['name']; ?></a>
+                        <a class="navbar-brand" href="#"> <?php echo 'name here'; ?></a>
                         <button href="" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-bar burger-lines"></span>
                             <span class="navbar-toggler-bar burger-lines"></span>
