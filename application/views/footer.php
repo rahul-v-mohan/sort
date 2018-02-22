@@ -16,7 +16,7 @@
  
 </body>
 <!--   Core JS Files   -->
-<script src="<?php echo base_url(); ?>assets/js/core/jquery.3.2.1.min.js" type="text/javascript"></script>
+<!--<script src="<?php // echo base_url(); ?>assets/js/core/jquery.3.2.1.min.js" type="text/javascript"></script>-->
 <script src="<?php echo base_url(); ?>assets/js/core/popper.min.js" type="text/javascript"></script>
 <script src="<?php echo base_url(); ?>assets/js/core/bootstrap.min.js" type="text/javascript"></script>
 <!--  Plugin for Switches, full documentation here: http://www.jque.re/plugins/version3/bootstrap.switch/ -->
@@ -29,4 +29,11 @@
 <script src="<?php echo base_url(); ?>assets/js/plugins/bootstrap-notify.js"></script>
 <!-- Control Center for Light Bootstrap Dashboard: scripts for the example pages etc -->
 <script src="<?php echo base_url(); ?>assets/js/light-bootstrap-dashboard.js?v=2.0.1" type="text/javascript"></script>
+<?php
+if(!empty($js_files)){
+    foreach($js_files as $files){
+?><script src="<?php echo base_url($files); ?>" type="text/javascript"></script>  <?php        
+    }
+}
+?>
 </html>

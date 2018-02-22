@@ -85,8 +85,13 @@ class Home extends CI_Controller {
         
     }
     ///////////////////////////////////////////////////////////////////////////////
-    public function donar_registration($method='insert',$id =0) {
+    public function donar_registration($id =0) {
+        $foot=[
+            'js_files' => ['JS/form/donar_registration.js'],
+        ];
+        $data['action_page'] = 'home/donar_reg_save';
         $data['form_method'] = 'insert';
+        $data['record_view'] = '0';
         $data['form_data'] = [
                                 'name' =>'',
                                 'dob' =>'',
@@ -112,74 +117,89 @@ class Home extends CI_Controller {
                 'order_by' => '', 
                 'limit' =>  [],];
             $result = $this->common->table_details($fields);
-                         if ($result->num_rows() == 0) {
+                         if ($result->num_rows() == 1) {
                  $data['form_data'] = $result->row_array();
-                 $data['form_method'] = 'updation';
+                 $data['form_method'] = 'update';
                          }
         }
         
-        
-        $this->load->view('header_site.php', ['menu' => $this->menu]);
-        $this->load->view('donar_registration.php', $data);
-        $this->load->view('footer.php');
-    }
-    public function donar_registration_process() {
-        
-        $data = array(
-            'email' => $this->input->post('email'),
-            'name' =>  $this->input->post('name'),
-            'dob' =>$this->input->post('dob'),
-            'mobile' =>$this->input->post('mobile'),
-            'gender' =>$this->input->post('gender'),
-            'status' => $this->input->post('status'),
-            'house_name' =>$this->input->post('house_name'),            
-            'location' =>$this->input->post('location'),            
-            'district' =>$this->input->post('district'),            
-            'state' =>$this->input->post('state'),            
-        );
-        $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
-        $this->form_validation->set_rules('name', 'Name', 'required');
-        $this->form_validation->set_rules('dob', 'Date Of Birth', 'required');
-        $this->form_validation->set_rules('mobile', 'Mobile', 'required|exact_length[10]|integer');
-        $this->form_validation->set_rules('house_name', 'House Name', 'required');
-        $this->form_validation->set_rules('location', 'Location', 'required');
-        $this->form_validation->set_rules('district', 'District', 'required');
-
-        if ($this->form_validation->run() == FALSE) {
-            $this->load->view('header_site.php', ['menu' => $this->menu]);
-            $this->load->view('login.php');
-            $this->load->view('footer.php');
-        } else {
             $fields = [
                 'table' => 'user',
-                'select' => '*', 
-                'where' => $data, 
+                'select' => array_keys($data['form_data']), 
+                'where' => ['role' =>'user'], 
                 'where_in' => [], 
                 'like' =>  [], 
                 'group_by' => '', 
                 'order_by' => '', 
                 'limit' =>  [],];
-            $result = $this->common->table_details($fields);
-             if ($result->num_rows() == 0) {
-                 $data['USER'] = $result->row_array();
-                 $this->session->set_userdata($data);
-                 
-                 if($data['USER']['role'] == 'admin'){
-                     redirect('home/login', 'refresh');
-                 }elseif($data['USER']['role'] == 'donar'){
-                     redirect('home/login', 'refresh');
-                 }elseif($data['USER']['role'] == 'hospital'){
-                     redirect('home/login', 'refresh'); 
-                 }else{
-                     $this->session->unset_userdata('USER');
-                      $this->session->set_flashdata('msg', 'Something Went wrong'); 
-                     redirect('home/login', 'refresh');
-                 }
-                 
-             }else{
-                $this->session->set_flashdata('msg', 'Enter Valid Username or Password'); 
-             }
+            $data['donar_datas'] = $this->common->table_details($fields)->result_array();
+            
+        $this->load->view('header_site.php', ['menu' => $this->menu]);
+        $this->load->view('donar_registration.php', $data);
+        $this->load->view('footer.php',$foot);
+    }
+        public function donar_reg_save() {
+        $this->load->helper('mailrahul');   // Extended helper created for mail sending purpose 
+        $id = $this->input->post('id');
+        
+
+        $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+        $this->form_validation->set_rules('name', 'Name', 'required');
+        $this->form_validation->set_rules('dob', 'Date Of Birth', 'required');
+        $this->form_validation->set_rules('gender', 'Gender', 'required');
+        $this->form_validation->set_rules('mobile', 'mobile', 'required');
+        $this->form_validation->set_rules('house_name', 'House name', 'required');
+        $this->form_validation->set_rules('location', 'Location', 'required');
+        $this->form_validation->set_rules('district', 'District', 'required');
+        $this->form_validation->set_rules('state', 'State', 'required');
+        $this->form_validation->set_rules('mobile', 'Mobile', 'required|exact_length[10]|integer');
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->donar_registration($id);
+            return;
+        } else {
+                  
+            
+            $data = array(
+            'email' => $this->input->post('email'),
+            'name' => $this->input->post('name'),
+            'dob' =>$this->input->post('dob'),
+            'gender' =>$this->input->post('gender'),
+            'mobile' =>$this->input->post('mobile'),
+            'house_name' =>$this->input->post('house_name'),
+            'location' =>$this->input->post('location'),
+            'district' =>$this->input->post('district'),
+            'state' =>$this->input->post('state'),
+            'status' =>$this->input->post('status'),
+        );
+            if($this->input->post('method') == 'insert'){
+                        //password creation
+               $data['password'] = '';
+               $alphabets = range('A', 'Z');
+               for ($inc = 1; $inc <= 8; $inc++) {
+                   $temp = rand(0, 25);
+                   $data['password'] .= $alphabets[$temp];
+               }
+           ///////////////////////////////   
+               $response = $this->common->save_table_details('user', $data);
+               $msg = (empty($response))?'Not able to insert try again':'Successfully Inserted';
+                              if(!empty($response)){
+                   $html =<<<rahul
+                 <h4> Account Created</h4>         
+                  Username: {$data['email']} </br>
+                  Password: {$data['password']} </br>
+rahul;
+                getemail($data['email'],'Login Credentials',$html);
+               }
+               $this->session->set_flashdata('msg', $msg);
+            }else if($this->input->post('method') == 'update'){
+                $where =['id' => $id];
+                $this->common->update_table_details('user', $data, $where);
+               $msg = (empty($response))?'Not able to update try again':'Successfully Updated';
+               $this->session->set_flashdata('msg', $msg);
+            }
         }
+                       redirect('admin/donar_registration');
     }
 /*
  * Forget Password
@@ -210,31 +230,5 @@ class Home extends CI_Controller {
         $this->session->sess_destroy();
         redirect('home/login', 'refresh');
     }
-    public function getemail() {
 
-        		error_reporting(-1);
-		ini_set('display_errors', 1);
-                
-        $config = array(
-            'protocol' => 'smtp',
-            'smtp_host' => 'ssl://smtp.googlemail.com',
-            'smtp_port' => 465,
-            'smtp_user' => 'rahul.mohan@ipsrsolutions.com',
-            'smtp_pass' => 'ipsr@rahulvm',
-            'mailtype' => 'html',
-            'charset' => 'iso-8859-1'
-        );
-        
-        $this->load->library('email', $config);
-        
-        $this->email->set_newline("\r\n");
-
-        $this->email->from('rahul.mohan@ipsrsolutions.com', 'Rahul');
-        $this->email->to('rahul.vmohan@gmail.com');
-
-        $this->email->subject('Email Test');
-        $this->email->message('Testing the email class.');  
-        $result = $this->email->send();
-        echo $this->email->print_debugger();
-    }
 }

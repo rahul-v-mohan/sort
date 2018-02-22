@@ -2,7 +2,7 @@
 $page_title = 'Hospital Registration';
 $table_name = 'Hospital Details';
 $action_page = 'admin/hospital_reg_save';
-
+$page_url ='admin/hospital_registration';
 ?>
 <!-- End Navbar -->
 <div class="content">
@@ -158,9 +158,9 @@ $action_page = 'admin/hospital_reg_save';
                                                 <td><?php echo $row['email']; ?></td>
                                                 <td><?php echo $row['gender']; ?></td>
                                                 <td><?php echo $row['status']; ?></td>
-                                                <td><a href="?action=edit&id=<?php echo $row['id'];?>"><button type="button" class="btn">Edit</button></a></td>
+                                                <td><a href="<?php echo base_url($page_url.'/'.$row['id']);?>"><button type="button" class="btn">Edit</button></a></td>
                                                 <td>
-                                                    <form method="post" action="<?php echo $action_page; ?>">
+                                                    <form method="post" action="<?php echo base_url('admin/hospital_delete');?>">
                                                         <input type="hidden"  id="id" name="id"   value="<?php echo $row['id']; ?>"  >
                                                         <input type="hidden"  id="method" name="method"   value="delete"  >
                                                         <button type="submit" class="btn">Delete</button>

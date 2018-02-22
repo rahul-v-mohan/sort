@@ -16,6 +16,9 @@
         <link href="<?php echo base_url(); ?>assets/css/light-bootstrap-dashboard.css?v=2.0.1" rel="stylesheet" />
         <!-- CSS Just for demo purpose, don't include it in your project -->
         <link href="<?php echo base_url(); ?>assets/css/demo.css" rel="stylesheet" />
+        <link rel="stylesheet" href="<?php echo base_url(); ?>CSS/jquery.datetimepicker.css"/>
+        <link rel="stylesheet" href="<?php echo base_url(); ?>CSS/jquery-ui.css"/>
+        <link rel="stylesheet" href="<?php echo base_url(); ?>CSS/jquery-confirm.min.css"/>
         <script src="<?php echo base_url(); ?>JS/jquery.min.js"></script>
         <script src="<?php echo base_url(); ?>JS/jquery-ui.js"></script>
         <script src="<?php echo base_url(); ?>JS/jquery.datetimepicker.full.min.js"></script>

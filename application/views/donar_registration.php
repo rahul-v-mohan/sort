@@ -1,18 +1,7 @@
 <?php
 $page_title = 'Donar Registration';
 $table_name = 'Donar Details';
-$action_page = 'home/donar_registration_process';
-
-
-$name = $form_data['name'];
-$dob = $form_data['dob'];
-$email =$form_data['email'];
-$mobile =$form_data['mobile'];
-$gender_male_check =($form_data['gender'] == 'Male')?'selected':'';
-$gender_female_check =($form_data['gender'] == 'Female')?'selected':'';
-$status = '1';
-$status_check = ($form_data['status'] == '1')?'checked':'';;
-$id = $form_data['id'];
+$page_url ='admin/donar_registration';
 ?>
 <!-- End Navbar -->
 <div class="content">
@@ -38,14 +27,15 @@ $id = $form_data['id'];
                     </div>
                     <div class="card-body">
 
-                        <form id="user_registration" method="post" action="<?php echo base_url($action_page); ?>">
-                            <input type="hidden" class="form-control"  name="id" value="<?php echo $id; ?>">
+                        <form id="donar_registration" method="post" action="<?php echo base_url($action_page); ?>">
+                            <input type="hidden" class="form-control"  name="id" value="<?php echo $form_data['id']; ?>">
                             <input type="hidden" class="form-control"  name="method" value="<?php echo $form_method; ?>">
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Name <span class="mandatory">*</span></label>
-                                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter Your name" value="<?php echo $name; ?>">
+                                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter Your name" value="<?php echo set_value('name', $form_data['name']); ?>">
+                                    <?php echo form_error('name', '<label class ="error">', '</label>'); ?>
                                     </div>
                                 </div>
                             </div>
@@ -53,40 +43,82 @@ $id = $form_data['id'];
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Email <span class="mandatory">*</span></label>
-                                        <input type="text" class="form-control" id="email" name="email" placeholder="Enter Your Valid Email" value="<?php echo $email; ?>">
+                                        <input type="text" class="form-control" id="email" name="email" placeholder="Enter Your Valid Email" value="<?php echo set_value('email', $form_data['email']); ?>">
+                                    <?php echo form_error('email', '<label class ="error">', '</label>'); ?>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Mobile <span class="mandatory">*</span></label>
-                                        <input type="text" class="form-control" id="mobile" name="mobile" maxlength="10" placeholder="Enter Your Mobile Number" value="<?php echo $mobile; ?>">
+                                        <input type="text" class="form-control" id="mobile" name="mobile" maxlength="10" placeholder="Enter Your Mobile Number" value="<?php echo set_value('mobile', $form_data['mobile']); ?>">
+                                    <?php echo form_error('mobile', '<label class ="error">', '</label>'); ?>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Date Of Birth <span class="mandatory">*</span></label>
+                                        <input type="text" class="form-control" id="dob" name="dob"  placeholder="DOB" value="<?php echo set_value('dob', $form_data['dob']); ?>">
+                                    <?php echo form_error('dob', '<label class ="error">', '</label>'); ?>
                                     </div>
                                 </div>
                                     </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>House Name <span class="mandatory">*</span></label>
+                                        <input type="text" class="form-control" id="house_name" name="house_name" placeholder="House Name" value="<?php echo set_value('house_name', $form_data['house_name']); ?>">
+                                    <?php echo form_error('house_name', '<label class ="error">', '</label>'); ?>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Location <span class="mandatory">*</span></label>
+                                        <input type="text" class="form-control" id="location" name="location" placeholder="Location" value="<?php echo set_value('location', $form_data['location']); ?>">
+                                    <?php echo form_error('location', '<label class ="error">', '</label>'); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>District <span class="mandatory">*</span></label>
+                                        <input type="text" class="form-control" id="district" name="district" placeholder="District" value="<?php echo set_value('district', $form_data['district']); ?>">
+                                    <?php echo form_error('district', '<label class ="error">', '</label>'); ?>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>State <span class="mandatory">*</span></label>
+                                        <input type="text" class="form-control" id="state" name="state" placeholder="State" value="<?php echo set_value('state', $form_data['state']); ?>">
+                                    <?php echo form_error('state', '<label class ="error">', '</label>'); ?>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Gender <span class="mandatory">*</span></label>
                                         <div class="options">
-                                            <label>Male</label><input type="radio"  id="gender-m" name="gender"  value="Male" <?php echo $gender_male_check; ?>>
-                                            <label>Female</label><input type="radio"  id="gender" name="gender"  value="Female" <?php echo $gender_female_check; ?>>
+                                            <label>Male</label><input type="radio"  id="gender-m" name="gender"  value="Male" <?php echo set_radio('gender', 'Male',($form_data['gender'] =='Male')?TRUE:FALSE); ?>>
+                                            <label>Female</label><input type="radio"  id="gender" name="gender"  value="Female" <?php echo set_radio('gender', 'Female',($form_data['gender'] =='Female')?TRUE:FALSE); ?>>
+                                        <?php echo form_error('gender', '<label class ="error">', '</label>'); ?>
                                         </div>
                                     </div>
                                 </div>
-                                <?php if(!empty($_SESSION['privilage'])){ ?>
                                 <div class="col-md-6">
+                                     <?php if(!empty($record_view)){ ?> 
                                     <div class="form-group">
                                         <label>Login Status</label>
                                         <div class="options">
-                                            <label>Set To Active</label><input type="checkbox"  id="status" name="status"   value="1" <?php echo $status_check; ?> >
+                                            <label>Set To Active</label><input type="checkbox"  id="status" name="status"   value="1"  <?php echo set_checkbox('status', '1',($form_data['status'] =='1')?TRUE:FALSE); ?> >
                                         </div>
                                     </div>
+                                     <?php }  else { ?>
+                                             <input type="hidden"   name="status"   value="<?php echo $form_data['status']; ?>" >        
+                                     <?php } ?>
                                 </div>
-                                <?php }else{ ?>
-                                <input type="hidden"  id="status" name="status"   value="<?php echo $status; ?>"  >
-                                <?php } ?>
                             </div>
                             <button type="submit" class="btn btn-info btn-fill pull-right">Submit</button>
                             <div class="clearfix"></div>
@@ -96,7 +128,7 @@ $id = $form_data['id'];
             </div>
         </div>
         <!--Table-->
-        <?php if(!empty($_SESSION['privilage'])){ ?>
+        <?php if(!empty($record_view)){ ?> 
         <div class="row">
                         <div class="col-md-12">
                             <div class="card strpied-tabled-with-hover">
@@ -120,9 +152,8 @@ $id = $form_data['id'];
                                             <?php 
                                             //get user details
                                             $slno = 1;
-                                            $result = $query->select('user','*',['role' =>'user']);
-                                            if(!empty($result)){
-                                            while ($row=  mysqli_fetch_assoc($result)){ 
+                                            if(!empty($donar_datas)){
+                                            foreach ($donar_datas as $row){ 
                                                 ?>
                                             <tr>
                                                 <td><?php echo $slno++; ?></td>
@@ -131,9 +162,9 @@ $id = $form_data['id'];
                                                 <td><?php echo $row['email']; ?></td>
                                                 <td><?php echo $row['gender']; ?></td>
                                                 <td><?php echo $row['status']; ?></td>
-                                                <td><a href="?action=edit&id=<?php echo $row['id'];?>"><button type="button" class="btn">Edit</button></a></td>
+                                                <td><a href="<?php echo base_url($page_url.'/'.$row['id']);?>"><button type="button" class="btn">Edit</button></a></td>
                                                 <td>
-                                                    <form method="post" action="<?php echo $action_page; ?>">
+                                                    <form method="post" action="<?php echo base_url('admin/donar_delete');?>">
                                                         <input type="hidden"  id="id" name="id"   value="<?php echo $row['id']; ?>"  >
                                                         <input type="hidden"  id="method" name="method"   value="delete"  >
                                                         <button type="submit" class="btn">Delete</button>
@@ -152,5 +183,5 @@ $id = $form_data['id'];
                         </div>
                        
                     </div>
-                <?php } ?>
+        <?php } ?>
     </div>
