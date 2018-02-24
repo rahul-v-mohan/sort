@@ -8,18 +8,19 @@ class Admin extends CI_Controller {
 
     function __construct() {
         parent::__construct();
-
         $this->load->model('common');
         $this->menu = [
-            'Home' => ['class' => '', 'url' => 'admin/index'],
+            'Home' => ['class' => '', 'url' => 'admin'],
             'Donar Registration' => ['class' => '', 'url' => 'admin/donar_registration'],
             'Hospital Registration' => ['class' => '', 'url' => 'admin/hospital_registration'],
         ];
     }
 
     public function index() {
+        $data['profile'] = $this->session->userdata('USER'); 
+        
         $this->load->view('header_site.php', ['menu' => $this->menu]);
-        $this->load->view('login.php');
+        $this->load->view('profile.php',$data);
         $this->load->view('footer.php');
     }
     public function hospital_registration($id =0) {
@@ -150,7 +151,7 @@ rahul;
         $foot=[
             'js_files' => ['JS/form/donar_registration.js'],
         ];
-        $data['action_page'] = 'home/donar_reg_save';
+        $data['action_page'] = 'admin/donar_reg_save';
         $data['form_method'] = 'insert';
         $data['record_view'] = '1';
         $data['form_data'] = [
@@ -187,7 +188,7 @@ rahul;
             $fields = [
                 'table' => 'user',
                 'select' => array_keys($data['form_data']), 
-                'where' => ['role' =>'user'], 
+                'where' => ['role' =>'donar'], 
                 'where_in' => [], 
                 'like' =>  [], 
                 'group_by' => '', 
@@ -232,7 +233,7 @@ rahul;
             'district' =>$this->input->post('district'),
             'state' =>$this->input->post('state'),
             'status' =>$this->input->post('status'),
-            'role' =>'user',
+            'role' =>'donar',
         );
             if($this->input->post('method') == 'insert'){
                         //password creation
@@ -256,7 +257,7 @@ rahul;
                $this->session->set_flashdata('msg', $msg);
             }else if($this->input->post('method') == 'update'){
                 $where =['id' => $id];
-                $this->common->update_table_details('user', $data, $where);
+                $response = $this->common->update_table_details('user', $data, $where);
                $msg = (empty($response))?'Not able to update try again':'Successfully Updated';
                $this->session->set_flashdata('msg', $msg);
             }

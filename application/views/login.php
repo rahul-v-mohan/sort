@@ -28,7 +28,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Email</label>
-                                        <input type="text" class="form-control" id="email" name="email" placeholder="Enter Your Username" value="">
+                                        <input type="text" class="form-control" id="email" name="email" placeholder="Enter Your Username" value="<?php echo set_value('email'); ?>">
                                         <?php echo form_error('email', '<label class ="error">', '</label>'); ?>
                                     </div>
                                 </div>

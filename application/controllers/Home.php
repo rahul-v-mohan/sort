@@ -48,9 +48,7 @@ class Home extends CI_Controller {
         $this->form_validation->set_rules('password', 'Password', 'required');
 
         if ($this->form_validation->run() == FALSE) {
-            $this->load->view('header_site.php', ['menu' => $this->menu]);
-            $this->load->view('login.php');
-            $this->load->view('footer.php');
+            $this->login;
         } else {
             $fields = [
                 'table' => 'user',
@@ -62,16 +60,16 @@ class Home extends CI_Controller {
                 'order_by' => '', 
                 'limit' =>  [],];
             $result = $this->common->table_details($fields);
-             if ($result->num_rows() == 0) {
+             if ($result->num_rows() == 1) {
                  $data['USER'] = $result->row_array();
                  $this->session->set_userdata($data);
                  
                  if($data['USER']['role'] == 'admin'){
-                     redirect('home/login', 'refresh');
+                     redirect('admin', 'refresh');
                  }elseif($data['USER']['role'] == 'donar'){
-                     redirect('home/login', 'refresh');
+                     redirect('donar', 'refresh');
                  }elseif($data['USER']['role'] == 'hospital'){
-                     redirect('home/login', 'refresh'); 
+                     redirect('hospital', 'refresh'); 
                  }else{
                      $this->session->unset_userdata('USER');
                       $this->session->set_flashdata('msg', 'Something Went wrong'); 
@@ -126,7 +124,7 @@ class Home extends CI_Controller {
             $fields = [
                 'table' => 'user',
                 'select' => array_keys($data['form_data']), 
-                'where' => ['role' =>'user'], 
+                'where' => ['role' =>'donar'], 
                 'where_in' => [], 
                 'like' =>  [], 
                 'group_by' => '', 
@@ -171,6 +169,7 @@ class Home extends CI_Controller {
             'district' =>$this->input->post('district'),
             'state' =>$this->input->post('state'),
             'status' =>$this->input->post('status'),
+            'role' =>'donar',
         );
             if($this->input->post('method') == 'insert'){
                         //password creation
@@ -194,12 +193,12 @@ rahul;
                $this->session->set_flashdata('msg', $msg);
             }else if($this->input->post('method') == 'update'){
                 $where =['id' => $id];
-                $this->common->update_table_details('user', $data, $where);
+                $response = $this->common->update_table_details('user', $data, $where);
                $msg = (empty($response))?'Not able to update try again':'Successfully Updated';
                $this->session->set_flashdata('msg', $msg);
             }
         }
-                       redirect('admin/donar_registration');
+                       redirect('home/donar_registration');
     }
 /*
  * Forget Password
