@@ -4,16 +4,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Admin extends CI_Controller {
 
-    var $menu;
+    var $menu,$menutop;
 
     function __construct() {
         parent::__construct();
         $this->load->model('common');
-        $this->menu = [
-            'Home' => ['class' => '', 'url' => 'admin'],
-            'Donar Registration' => ['class' => '', 'url' => 'admin/donar_registration'],
-            'Hospital Registration' => ['class' => '', 'url' => 'admin/hospital_registration'],
-        ];
+        
+        $this->load->helper('rolemenu');
+        $temp = getmenu();
+        $this->menu = $temp['menu'];
+        $this->menutop = $temp['menutop'];
+        
         if ($this->session->userdata('logged_in')) {
             $user_data = $this->session->userdata('USER');
             $access = ($user_data['role'] == 'admin') ? 1 : 0;
@@ -28,7 +29,7 @@ class Admin extends CI_Controller {
     public function index() {
 //        $data['profile'] = $this->session->userdata('USER'); 
 
-        $this->load->view('header_site.php', ['menu' => $this->menu, 'logged_in' => '1','change_password_url' =>'admin/change_password']);
+        $this->load->view('header_site.php', ['menu' => $this->menu,'top_menu'=>$this->menutop]);
 //        $this->load->view('profile.php',$data);
         $this->load->view('footer.php');
     }
@@ -80,7 +81,7 @@ class Admin extends CI_Controller {
             'limit' => [],];
         $data['hospital_datas'] = $this->common->table_details($fields)->result_array();
 
-        $this->load->view('header_site.php', ['menu' => $this->menu, 'logged_in' => '1','change_password_url' =>'admin/change_password']);
+        $this->load->view('header_site.php', ['menu' => $this->menu, 'top_menu'=>$this->menutop]);
         $this->load->view('hospital_registration.php', $data);
         $this->load->view('footer.php', $foot);
     }
@@ -219,7 +220,7 @@ rahul;
             'limit' => []];
         $data['donar_datas'] = $this->common->table_details_join($fields)->result_array();
 
-        $this->load->view('header_site.php', ['menu' => $this->menu, 'logged_in' => '1','change_password_url' =>'admin/change_password']);
+        $this->load->view('header_site.php', ['menu' => $this->menu, 'top_menu'=>$this->menutop]);
         $this->load->view('donar_registration.php', $data);
         $this->load->view('footer.php', $foot);
     }
@@ -310,7 +311,7 @@ rahul;
     }
 
     public function change_password() {
-        $this->load->view('header_site.php', ['menu' => $this->menu]);
+        $this->load->view('header_site.php', ['menu' => $this->menu,'top_menu'=>$this->menutop]);
         $this->load->view('change_password.php',['action_url' => 'admin/change_password_check']);
         $this->load->view('footer.php');
     }

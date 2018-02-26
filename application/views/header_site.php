@@ -71,21 +71,20 @@
                             <span class="navbar-toggler-bar burger-lines"></span>
                             <span class="navbar-toggler-bar burger-lines"></span>
                         </button>
-                        <?php if(!empty($logged_in)){ ?>
+                        <?php 
+                        if(!empty($top_menu)){ ?>
                         <div class="collapse navbar-collapse justify-content-end" id="navigation">
                         <ul class="navbar-nav ml-auto">
+                            <?php foreach ($top_menu as $title => $url) {         ?>
                             <li class="nav-item">
-                                <a class="nav-link" href="<?php echo base_url($change_password_url); ?>">
-                                    <span class="no-icon">Change Password</span>
+                                <a class="nav-link" href="<?php echo base_url($url); ?>">
+                                    <span class="no-icon"><?php echo $title; ?></span>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="<?php echo base_url('home/logout'); ?>">
-                                    <span class="no-icon">Log out</span>
-                                </a>
-                            </li>
+                            <?php   } ?>
                         </ul>
                     </div>
-                        <?php } ?>
+                        
+                         <?php }  ?>
                     </div>
                 </nav>

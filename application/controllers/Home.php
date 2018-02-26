@@ -10,13 +10,12 @@ class Home extends CI_Controller {
         parent::__construct();
 
         $this->load->model('common');
-        $this->menu = [
-            'Home' => [ 'class' => 'nc-atom', 'url' => ''],
-            'About Us' => [ 'class' => 'nc-attach-87', 'url' => 'home/about_us'],
-            'Login' => [ 'class' => 'nc-lock-circle-open', 'url' => 'home/login'],
-            'Donar Registration' => [ 'class' => 'nc-paper-2', 'url' => 'home/donar_registration'],
-            'Contact Us' => [ 'class' => 'nc-pin-3', 'url' => 'home/contact'],
-        ];
+        $this->load->helper('role_menu');
+        
+        $this->load->helper('rolemenu');
+        $temp = getmenu();
+        $this->menu = $temp['menu'];
+        $this->menutop = $temp['menutop'];
     }
 
     public function index() {
