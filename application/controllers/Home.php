@@ -30,193 +30,248 @@ class Home extends CI_Controller {
         $this->load->view('aboutus.php');
         $this->load->view('footer.php');
     }
-/*
- * Login
- */
+
+    /*
+     * Login
+     */
+
     public function login() {
         $this->load->view('header_site.php', ['menu' => $this->menu]);
         $this->load->view('login.php');
         $this->load->view('footer.php');
     }
+
     public function logincheck() {
         $data = array(
             'email' => $this->input->post('email'),
             'password' => $this->input->post('password'),
-            'status' =>'1',
+            'status' => '1',
         );
         $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
         $this->form_validation->set_rules('password', 'Password', 'required');
 
         if ($this->form_validation->run() == FALSE) {
-            $this->login;
+            $this->login();
         } else {
             $fields = [
                 'table' => 'user',
-                'select' => '*', 
-                'where' => $data, 
-                'where_in' => [], 
-                'like' =>  [], 
-                'group_by' => '', 
-                'order_by' => '', 
-                'limit' =>  [],];
+                'select' => '*',
+                'where' => $data,
+                'where_in' => [],
+                'like' => [],
+                'group_by' => '',
+                'order_by' => '',
+                'limit' => [],];
             $result = $this->common->table_details($fields);
-             if ($result->num_rows() == 1) {
-                 $data['USER'] = $result->row_array();
-                 $this->session->set_userdata($data);
-                 
-                 if($data['USER']['role'] == 'admin'){
-                     redirect('admin', 'refresh');
-                 }elseif($data['USER']['role'] == 'donar'){
-                     redirect('donar', 'refresh');
-                 }elseif($data['USER']['role'] == 'hospital'){
-                     redirect('hospital', 'refresh'); 
-                 }else{
-                     $this->session->unset_userdata('USER');
-                      $this->session->set_flashdata('msg', 'Something Went wrong'); 
-                     redirect('home/login', 'refresh');
-                 }
-                 
-             }else{
-                $this->session->set_flashdata('msg', 'Enter Valid Username or Password'); 
-             }
+            if ($result->num_rows() == 1) {
+                $data['USER'] = $result->row_array();
+                $this->session->set_userdata($data);
+                $this->session->set_userdata(['logged_in' => true]);
+                if ($data['USER']['role'] == 'admin') {
+                    redirect('admin', 'refresh');
+                } elseif ($data['USER']['role'] == 'donar') {
+                    redirect('donar', 'refresh');
+                } elseif ($data['USER']['role'] == 'hospital') {
+                    redirect('hospital', 'refresh');
+                } else {
+                    $this->session->unset_userdata('USER');
+                    $this->session->set_flashdata('msg', 'Something Went wrong');
+                    redirect('home/login', 'refresh');
+                }
+            } else {
+                $this->session->set_flashdata('msg', 'Enter Valid Username or Password');
+                $this->login();
+            }
         }
-        
     }
+
     ///////////////////////////////////////////////////////////////////////////////
-    public function donar_registration($id =0) {
-        $foot=[
+    public function donar_registration($id = 0) {
+//        $this->output->enable_profiler(TRUE);
+        $foot = [
             'js_files' => ['JS/form/donar_registration.js'],
         ];
         $data['action_page'] = 'home/donar_reg_save';
         $data['form_method'] = 'insert';
         $data['record_view'] = '0';
         $data['form_data'] = [
-                                'name' =>'',
-                                'dob' =>'',
-                                'email' => '',
-                                'mobile' =>'',
-                                'gender' =>'',
-                                'status' => '1',
-                                'house_name' =>'',            
-                                'location' =>'',            
-                                'district' =>'',            
-                                'state' =>'',            
-                                'id' => '0' ,
+            'name' => '',
+            'dob' => '',
+            'email' => '',
+            'mobile' => '',
+            'gender' => '',
+            'status' => '1',
+            'house_name' => '',
+            'location' => '',
+            'district' => '',
+            'state' => '',
+            'height' => '',
+            'weight' => '',
+            'blood_group' => '',
+            'blood_donatewilling' => '',
+            'health_remark' => '',
+            'user_id' => '0',
         ];
-        
-        if(!empty($id)){
-            $fields = [
-                'table' => 'user',
-                'select' => array_keys($data['form_data']), 
-                'where' => ['id' =>$id], 
-                'where_in' => [], 
-                'like' =>  [], 
-                'group_by' => '', 
-                'order_by' => '', 
-                'limit' =>  [],];
-            $result = $this->common->table_details($fields);
-                         if ($result->num_rows() == 1) {
-                 $data['form_data'] = $result->row_array();
-                 $data['form_method'] = 'update';
-                         }
+
+        if (!empty($id)) {
+            $fields = array(
+                'table1' => 'user u',
+                'table2' => 'personal_details p',
+                'condition2' => 'u.id = p.user_id',
+                'join2' => 'inner',
+                'select' => '*',
+                'where' => ['u.id' => $id],
+                'where_in' => [],
+                'like' => [],
+                'group_by' => '',
+                'order_by' => '',
+                'limit' => array());
+            $result = $this->common->table_details_join($fields);
+            if ($result->num_rows() == 1) {
+                $data['form_data'] = $result->row_array();
+                $data['form_method'] = 'update';
+            }
         }
-        
-            $fields = [
-                'table' => 'user',
-                'select' => array_keys($data['form_data']), 
-                'where' => ['role' =>'donar'], 
-                'where_in' => [], 
-                'like' =>  [], 
-                'group_by' => '', 
-                'order_by' => '', 
-                'limit' =>  [],];
-            $data['donar_datas'] = $this->common->table_details($fields)->result_array();
-            
+
         $this->load->view('header_site.php', ['menu' => $this->menu]);
         $this->load->view('donar_registration.php', $data);
-        $this->load->view('footer.php',$foot);
+        $this->load->view('footer.php', $foot);
     }
-        public function donar_reg_save() {
+
+    public function donar_reg_save() {
         $this->load->helper('mailrahul');   // Extended helper created for mail sending purpose 
         $id = $this->input->post('id');
-        
+
 
         $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
         $this->form_validation->set_rules('name', 'Name', 'required');
         $this->form_validation->set_rules('dob', 'Date Of Birth', 'required');
         $this->form_validation->set_rules('gender', 'Gender', 'required');
-        $this->form_validation->set_rules('mobile', 'mobile', 'required');
+        $this->form_validation->set_rules('mobile', 'Mobile', 'required|exact_length[10]|integer');
         $this->form_validation->set_rules('house_name', 'House name', 'required');
         $this->form_validation->set_rules('location', 'Location', 'required');
         $this->form_validation->set_rules('district', 'District', 'required');
         $this->form_validation->set_rules('state', 'State', 'required');
-        $this->form_validation->set_rules('mobile', 'Mobile', 'required|exact_length[10]|integer');
+        $this->form_validation->set_rules('blood_group', 'Blood Group', 'required');
+
 
         if ($this->form_validation->run() == FALSE) {
             $this->donar_registration($id);
             return;
         } else {
-                  
-            
-            $data = array(
-            'email' => $this->input->post('email'),
-            'name' => $this->input->post('name'),
-            'dob' =>$this->input->post('dob'),
-            'gender' =>$this->input->post('gender'),
-            'mobile' =>$this->input->post('mobile'),
-            'house_name' =>$this->input->post('house_name'),
-            'location' =>$this->input->post('location'),
-            'district' =>$this->input->post('district'),
-            'state' =>$this->input->post('state'),
-            'status' =>$this->input->post('status'),
-            'role' =>'donar',
-        );
-            if($this->input->post('method') == 'insert'){
-                        //password creation
-               $data['password'] = '';
-               $alphabets = range('A', 'Z');
-               for ($inc = 1; $inc <= 8; $inc++) {
-                   $temp = rand(0, 25);
-                   $data['password'] .= $alphabets[$temp];
-               }
-           ///////////////////////////////   
-               $response = $this->common->save_table_details('user', $data);
-               $msg = (empty($response))?'Not able to insert try again':'Successfully Inserted';
-                              if(!empty($response)){
-                   $html =<<<rahul
+
+
+            $data_reg = array(
+                'email' => $this->input->post('email'),
+                'status' => $this->input->post('status'),
+                'role' => 'donar',
+            );
+            $data_personal = array(
+                'name' => $this->input->post('name'),
+                'dob' => $this->input->post('dob'),
+                'gender' => $this->input->post('gender'),
+                'mobile' => $this->input->post('mobile'),
+                'house_name' => $this->input->post('house_name'),
+                'location' => $this->input->post('location'),
+                'district' => $this->input->post('district'),
+                'state' => $this->input->post('state'),
+                'weight' => $this->input->post('weight'),
+                'height' => $this->input->post('height'),
+                'blood_group' => $this->input->post('blood_group'),
+                'blood_donatewilling' => $this->input->post('blood_donatewilling'),
+                'health_remark' => $this->input->post('health_remark'),
+            );
+            if ($this->input->post('method') == 'insert') {
+                //password creation
+                $data_reg['password'] = '';
+                $alphabets = range('A', 'Z');
+                for ($inc = 1; $inc <= 8; $inc++) {
+                    $temp = rand(0, 25);
+                    $data_reg['password'] .= $alphabets[$temp];
+                }
+                ///////////////////////////////   
+                $insert_id = $this->common->save_table_details('user', $data_reg);
+                $data_personal['user_id'] = $insert_id;
+                $response = $this->common->save_table_details('personal_details', $data_personal);
+                $msg = (empty($response)) ? 'Not able to insert try again' : 'Successfully Inserted';
+                if (!empty($response)) {
+                    $html = <<<rahul
                  <h4> Account Created</h4>         
-                  Username: {$data['email']} </br>
-                  Password: {$data['password']} </br>
+                  Username: {$data_reg['email']} </br>
+                  Password: {$data_reg['password']} </br>
 rahul;
-                getemail($data['email'],'Login Credentials',$html);
-               }
-               $this->session->set_flashdata('msg', $msg);
-            }else if($this->input->post('method') == 'update'){
-                $where =['id' => $id];
-                $response = $this->common->update_table_details('user', $data, $where);
-               $msg = (empty($response))?'Not able to update try again':'Successfully Updated';
-               $this->session->set_flashdata('msg', $msg);
+                    getemail($data_reg['email'], 'Login Credentials', $html);
+                }
+                $this->session->set_flashdata('msg', $msg);
+            } else if ($this->input->post('method') == 'update') {
+                $where = ['id' => $id];
+                $responseuser = $this->common->update_table_details('user', $data_reg, $where);
+                $responsepersonal = $this->common->update_table_details('personal_details', $data_personal, ['user_id' => $id]);
+                $msg = (empty($responseuser) && empty($responsepersonal)) ? 'Not able to update try again' : 'Successfully Updated';
+                $this->session->set_flashdata('msg', $msg);
             }
         }
-                       redirect('home/donar_registration');
+        redirect('home/donar_registration');
     }
-/*
- * Forget Password
- */
+
+    /*
+     * Forget Password
+     */
+
     public function forget_password() {
         $this->load->view('header_site.php', ['menu' => $this->menu]);
         $this->load->view('forget_password.php');
         $this->load->view('footer.php');
     }
+
     public function forget_password_check() {
-                $data = array(
+        $this->load->helper('mailrahul');
+        $data = array(
             'email' => $this->input->post('email'),
         );
-        $this->load->view('header_site.php', ['menu' => $this->menu]);
-        $this->load->view('forget_password.php');
-        $this->load->view('footer.php');
+        $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+        if ($this->form_validation->run() == FALSE) {
+            $this->forget_password();
+            return;
+        } else {
+            $fields = [
+                'table' => 'user',
+                'select' => 'id',
+                'where' => $data,
+                'where_in' => [],
+                'like' => [],
+                'group_by' => '',
+                'order_by' => '',
+                'limit' => [],];
+            $response = $this->common->table_details($fields);
+
+            if ($response->num_rows() == 1) {
+                $user = $response->row_array();
+                //password creation
+                $data_reg['password'] = '';
+                $alphabets = range('A', 'Z');
+                for ($inc = 1; $inc <= 8; $inc++) {
+                    $temp = rand(0, 25);
+                    $data_reg['password'] .= $alphabets[$temp];
+                }
+                ///////////////////////////////   
+                $where = ['id' => $user['id']];
+                $responseuser = $this->common->update_table_details('user', $data_reg, $where);
+                if ($responseuser) {
+                    $html = <<<rahul
+                 <h4> Password Reset </h4>         
+                  Username: {$data['email']} </br>
+                  Password: {$data_reg['password']} </br>
+rahul;
+                    getemail($data['email'], 'Password Reset', $html);
+                }
+            }
+            $msg = (empty($responseuser)) ? 'Not Able to Reset Password!! Try Again' : 'Password is updated!!! Check Your Mail';
+            $this->session->set_flashdata('msg', $msg);
+            redirect('home/forget_password', 'refresh');
+        }
     }
-    
+
 /////////////////////////////////////////////////////////////
     public function contact() {
         $this->load->view('header_site.php', ['menu' => $this->menu]);
@@ -225,7 +280,7 @@ rahul;
     }
 
     public function logout() {
-
+        
         $this->session->sess_destroy();
         redirect('home/login', 'refresh');
     }

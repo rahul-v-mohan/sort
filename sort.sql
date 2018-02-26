@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.1
+-- version 4.3.11
 -- http://www.phpmyadmin.net
 --
--- Host: 192.168.1.3
--- Generation Time: Feb 09, 2018 at 11:57 AM
--- Server version: 10.0.28-MariaDB
--- PHP Version: 5.6.29
+-- Host: 127.0.0.1
+-- Generation Time: Feb 26, 2018 at 03:04 AM
+-- Server version: 5.6.24
+-- PHP Version: 5.6.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `sort`
@@ -26,7 +26,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `donar_organs`
 --
 
-CREATE TABLE `donar_organs` (
+CREATE TABLE IF NOT EXISTS `donar_organs` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `organ_id` int(11) NOT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE `donar_organs` (
 -- Table structure for table `hosital_patient`
 --
 
-CREATE TABLE `hosital_patient` (
+CREATE TABLE IF NOT EXISTS `hosital_patient` (
   `id` int(11) NOT NULL,
   `hospital_id` int(11) NOT NULL COMMENT 'user_id',
   `patient_name` varchar(60) NOT NULL,
@@ -57,14 +57,14 @@ CREATE TABLE `hosital_patient` (
 -- Table structure for table `hospital`
 --
 
-CREATE TABLE `hospital` (
+CREATE TABLE IF NOT EXISTS `hospital` (
   `id` int(11) NOT NULL,
   `hospital_name` varchar(50) NOT NULL,
   `location` varchar(60) NOT NULL,
   `district` varchar(60) NOT NULL,
   `state` varchar(60) NOT NULL,
   `mobile` varchar(16) NOT NULL,
-  `email` varchar(60) NOT NULL,
+  `email_hospital` varchar(60) NOT NULL,
   `website_url` varchar(60) NOT NULL,
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -75,7 +75,7 @@ CREATE TABLE `hospital` (
 -- Table structure for table `organs`
 --
 
-CREATE TABLE `organs` (
+CREATE TABLE IF NOT EXISTS `organs` (
   `id` int(11) NOT NULL,
   `organ` varchar(60) NOT NULL,
   `type` varchar(30) NOT NULL COMMENT 'before death/ after death'
@@ -87,7 +87,7 @@ CREATE TABLE `organs` (
 -- Table structure for table `patient_request`
 --
 
-CREATE TABLE `patient_request` (
+CREATE TABLE IF NOT EXISTS `patient_request` (
   `id` int(11) NOT NULL,
   `patient_id` int(11) NOT NULL,
   `organ_id` int(11) NOT NULL,
@@ -101,16 +101,23 @@ CREATE TABLE `patient_request` (
 -- Table structure for table `personal_details`
 --
 
-CREATE TABLE `personal_details` (
+CREATE TABLE IF NOT EXISTS `personal_details` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `blood_group` int(11) NOT NULL,
+  `name` varchar(80) NOT NULL,
+  `dob` date NOT NULL,
+  `mobile` varchar(16) NOT NULL,
+  `gender` varchar(12) NOT NULL,
+  `house_name` varchar(120) NOT NULL,
+  `location` varchar(120) NOT NULL,
+  `district` varchar(80) NOT NULL,
+  `state` varchar(80) NOT NULL,
+  `blood_group` varchar(6) NOT NULL,
   `height` decimal(6,2) NOT NULL,
   `weight` decimal(6,2) NOT NULL,
-  `last_blooddonation` date NOT NULL,
-  `status` int(11) NOT NULL COMMENT 'willingness',
+  `blood_donatewilling` tinyint(11) DEFAULT NULL COMMENT 'willingness',
   `health_remark` varchar(250) NOT NULL COMMENT 'general remark'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -118,7 +125,7 @@ CREATE TABLE `personal_details` (
 -- Table structure for table `requested_donar`
 --
 
-CREATE TABLE `requested_donar` (
+CREATE TABLE IF NOT EXISTS `requested_donar` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `request_id` int(11) NOT NULL,
@@ -134,20 +141,21 @@ CREATE TABLE `requested_donar` (
 -- Table structure for table `user`
 --
 
-CREATE TABLE `user` (
+CREATE TABLE IF NOT EXISTS `user` (
   `id` int(11) NOT NULL,
   `email` varchar(60) NOT NULL,
   `password` varchar(60) NOT NULL,
-  `name` int(80) NOT NULL,
-  `dob` date NOT NULL,
-  `mobile` varchar(16) NOT NULL,
-  `gender` varchar(20) NOT NULL,
-  `house_name` int(11) NOT NULL,
-  `location` int(11) NOT NULL,
-  `district` int(11) NOT NULL,
-  `state` int(11) NOT NULL,
+  `role` varchar(20) NOT NULL,
   `status` tinyint(4) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`id`, `email`, `password`, `role`, `status`) VALUES
+(2, 'admin@xxx.com', 'admin', 'admin', 1),
+(3, 'rahul@x.com', 'VUZQIKJS', 'donar', 0);
 
 --
 -- Indexes for dumped tables
@@ -181,7 +189,7 @@ ALTER TABLE `patient_request`
 -- Indexes for table `personal_details`
 --
 ALTER TABLE `personal_details`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`), ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `requested_donar`
@@ -193,7 +201,7 @@ ALTER TABLE `requested_donar`
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `email` (`email`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -223,7 +231,7 @@ ALTER TABLE `patient_request`
 -- AUTO_INCREMENT for table `personal_details`
 --
 ALTER TABLE `personal_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `requested_donar`
 --
@@ -233,7 +241,17 @@ ALTER TABLE `requested_donar`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `personal_details`
+--
+ALTER TABLE `personal_details`
+ADD CONSTRAINT `personal_details_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE;
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

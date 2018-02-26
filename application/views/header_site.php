@@ -71,5 +71,21 @@
                             <span class="navbar-toggler-bar burger-lines"></span>
                             <span class="navbar-toggler-bar burger-lines"></span>
                         </button>
+                        <?php if(!empty($logged_in)){ ?>
+                        <div class="collapse navbar-collapse justify-content-end" id="navigation">
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?php echo base_url($change_password_url); ?>">
+                                    <span class="no-icon">Change Password</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="<?php echo base_url('home/logout'); ?>">
+                                    <span class="no-icon">Log out</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                        <?php } ?>
                     </div>
                 </nav>

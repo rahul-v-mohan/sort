@@ -34,14 +34,67 @@ $page_url ='admin/hospital_registration';
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="form-group">
+                                        <label>Hospital Name <span class="mandatory">*</span></label>
+                                        <input type="text" class="form-control" id="hospital_name" name="hospital_name" placeholder="Hospital Name" value="<?php echo set_value('hospital_name', $form_data['hospital_name']); ?>">
+                                    <?php echo form_error('hospital_name', '<label class ="error">', '</label>'); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Location <span class="mandatory">*</span></label>
+                                        <input type="text" class="form-control" id="location" name="location" placeholder="Location" value="<?php echo set_value('location', $form_data['location']); ?>">
+                                    <?php echo form_error('location', '<label class ="error">', '</label>'); ?>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>District <span class="mandatory">*</span></label>
+                                        <input type="text" class="form-control" id="district" name="district" placeholder="District" value="<?php echo set_value('district', $form_data['district']); ?>">
+                                    <?php echo form_error('district', '<label class ="error">', '</label>'); ?>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>State <span class="mandatory">*</span></label>
+                                        <input type="text" class="form-control" id="state" name="state" placeholder="State" value="<?php echo set_value('state', $form_data['state']); ?>">
+                                    <?php echo form_error('state', '<label class ="error">', '</label>'); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Mobile <span class="mandatory">*</span></label>
+                                        <input type="text" class="form-control" id="hospital_mobile" name="hospital_mobile" placeholder="Hospital Number" value="<?php echo set_value('hospital_mobile', $form_data['hospital_mobile']); ?>">
+                                    <?php echo form_error('hospital_mobile', '<label class ="error">', '</label>'); ?>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Email <span class="mandatory">*</span></label>
+                                        <input type="text" class="form-control" id="district" name="district" placeholder="District" value="<?php echo set_value('district', $form_data['district']); ?>">
+                                    <?php echo form_error('district', '<label class ="error">', '</label>'); ?>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Website Url <span class="mandatory">*</span></label>
+                                        <input type="text" class="form-control" id="state" name="state" placeholder="State" value="<?php echo set_value('state', $form_data['state']); ?>">
+                                    <?php echo form_error('state', '<label class ="error">', '</label>'); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
                                         <label>Name <span class="mandatory">*</span></label>
                                         <input type="text" class="form-control" id="name" name="name" placeholder="Enter Your name" value="<?php echo set_value('name', $form_data['name']); ?>">
                                     <?php echo form_error('name', '<label class ="error">', '</label>'); ?>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Email <span class="mandatory">*</span></label>
                                         <input type="text" class="form-control" id="email" name="email" placeholder="Enter Your Valid Email" value="<?php echo set_value('email', $form_data['email']); ?>">

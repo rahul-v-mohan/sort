@@ -28,13 +28,13 @@ $page_title = 'Profile';
 <!--                                    <p class="card-category">Manage users here</p>-->
                                 </div>
                                 <div class="card-body ">
-                                    <table class="table table-hover">
-                                                                          <tbody>
-                                            <tr><td>Name</td><td><?php echo $profile['name']; ?></td></tr>
-                                            <tr><td>Gender</td><td><?php echo $profile['gender']; ?></td></tr>
-                                            <tr><td>Date Of Birth</td><td><?php echo $profile['dob']; ?></td></tr>
-                                            <tr><td>Mobile</td><td><?php echo $profile['mobile']; ?></td></tr>
-                                        </tbody>
+                                    <table class="table table-hover ">
+                                                                          <!--<tbody>-->
+                                            <tr><td>Name</td><th><?php echo $profile['name']; ?></th></tr>
+                                            <tr><td>Gender</td><th><?php echo $profile['gender']; ?></th></tr>
+                                            <tr><td>Date Of Birth</td><th><?php echo $profile['dob']; ?></th></tr>
+                                            <tr><td>Mobile</td><th><?php echo $profile['mobile']; ?></th></tr>
+                                        <!--</tbody>-->
                                     </table>
                                 </div>
                             </div>

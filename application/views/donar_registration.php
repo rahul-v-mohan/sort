@@ -2,6 +2,8 @@
 $page_title = 'Donar Registration';
 $table_name = 'Donar Details';
 $page_url ='admin/donar_registration';
+
+$bloodgrouplist =['A+','A-','B+','B-','O+','O-','AB+','AB-'];
 ?>
 <!-- End Navbar -->
 <div class="content">
@@ -28,7 +30,7 @@ $page_url ='admin/donar_registration';
                     <div class="card-body">
 
                         <form id="donar_registration" method="post" action="<?php echo base_url($action_page); ?>">
-                            <input type="hidden" class="form-control"  name="id" value="<?php echo $form_data['id']; ?>">
+                            <input type="hidden" class="form-control"  name="id" value="<?php echo $form_data['user_id']; ?>">
                             <input type="hidden" class="form-control"  name="method" value="<?php echo $form_method; ?>">
                             <div class="row">
                                 <div class="col-md-12">
@@ -97,7 +99,44 @@ $page_url ='admin/donar_registration';
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Height</label>
+                                        <input type="text" class="form-control" id="height" name="height" placeholder="Height (Centimetres)" value="<?php echo set_value('height', $form_data['height']); ?>">
+                                    <?php echo form_error('height', '<label class ="error">', '</label>'); ?>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Weight</label>
+                                        <input type="text" class="form-control" id="weight" name="weight" placeholder="Weight (Kilograms)" value="<?php echo set_value('weight', $form_data['weight']); ?>">
+                                    <?php echo form_error('weight', '<label class ="error">', '</label>'); ?>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Blood Group <span class="mandatory">*</span></label>
+                                        <select id="blood_group" name="blood_group" class="form-control">
+                                            <option value="">Select</option>
+                                           <?php foreach($bloodgrouplist as $temp){ ?>
+                                            <option  <?php echo  set_select('blood_group', $temp,($form_data['blood_group'] ==$temp)?TRUE:FALSE); ?> value="<?php echo $temp; ?>"><?php echo $temp; ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    <?php echo form_error('blood_group', '<label class ="error">', '</label>'); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Check If Wiling To Donate Blood <span class="mandatory">*</span></label>
+                                        <div class="options">
+                                            <input type="checkbox"  id="blood_donatewilling" name="blood_donatewilling"  value="1" <?php echo set_radio('blood_donatewilling', '1',($form_data['blood_donatewilling'] =='1')?TRUE:FALSE); ?>>
+                                        <?php echo form_error('blood_donatewilling', '<label class ="error">', '</label>'); ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Gender <span class="mandatory">*</span></label>
                                         <div class="options">
@@ -107,7 +146,7 @@ $page_url ='admin/donar_registration';
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                      <?php if(!empty($record_view)){ ?> 
                                     <div class="form-group">
                                         <label>Login Status</label>
@@ -118,6 +157,15 @@ $page_url ='admin/donar_registration';
                                      <?php }  else { ?>
                                              <input type="hidden"   name="status"   value="<?php echo $form_data['status']; ?>" >        
                                      <?php } ?>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>General Health Remark</label>
+                                        <textarea type="checkbox" class="form-control" id="health_remark" name="health_remark" ><?php echo set_value('health_remark', $form_data['health_remark']); ?></textarea>
+                                        <?php echo form_error('health_remark', '<label class ="error">', '</label>'); ?>
+                                    </div>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-info btn-fill pull-right">Submit</button>
