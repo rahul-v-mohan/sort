@@ -109,8 +109,8 @@ class Home extends CI_Controller {
             'mobile' => '','gender' => '','status' => '1',
             'house_name' => '','location' => '','district' => '',
             'state' => '','height' => '','weight' => '',
-            'blood_group' => '','health_remark' => '','organ' => '',
-            'organ_avail' => '',
+            'blood_group' => '','health_remark' => '','organs' => [],
+            'organ_avail' => [],
             'user_id' => '0',
         ];
         $fields = [
@@ -137,8 +137,10 @@ class Home extends CI_Controller {
                     'group_by' => '', 'order_by' => '', 'limit' => [],];
 
                 $temp = $this->common->table_details($fields)->result_array();
-                $data['form_data']['organs'] = (!empty($temp)) ? array_column($temp, 'organ_id', 'id') : [];
-                $data['form_data']['organs_avail'] = (!empty($temp)) ? array_column($temp, 'status', 'id') : [];
+               
+                $data['form_data']['organs'] = (!empty($temp)) ? array_column($temp,'organ_id') : [];
+//                print_r($data['form_data']['organs']);die();
+                $data['form_data']['organs_avail'] = (!empty($temp)) ? array_column($temp, 'status', 'organ_id') : [];
                 ///////////////////////
                 $data['form_method'] = 'update';
             }
@@ -150,6 +152,7 @@ class Home extends CI_Controller {
     }
 
     public function donar_reg_save() {
+//                $this->output->enable_profiler(TRUE);
         $this->load->helper('mailrahul');   // Extended helper created for mail sending purpose 
         $id = $this->input->post('id');
 
@@ -208,7 +211,7 @@ class Home extends CI_Controller {
                 $response = $this->common->save_table_details('personal_details', $data_personal);
 
                 //Organ Management
-                foreach ($organs as $organ_id) {
+                foreach ($organs as $organ_id => $val) {
                     $aviltemp = (!empty($organ_avail[$organ_id])) ? '1' : '0';
                     $organ_details = array(
                         'user_id' => $data_personal['user_id'],
@@ -233,32 +236,35 @@ rahul;
                 $responseuser = $this->common->update_table_details('user', $data_reg, $where);
                 $responsepersonal = $this->common->update_table_details('personal_details', $data_personal, ['user_id' => $id]);
                 // Organ      
-                $organ_ids=[];
-                foreach ($organs as $organ_id) {
-                                    $fields = [
-                    'table' => 'donar_organs', 'select' => 'id',
-                    'where' => ['user_id' => $id,'organ_id'=>$organ_id], 'where_in' => [], 'like' => [],
+                $fields = [
+                    'table' => 'donar_organs', 'select' => '*',
+                    'where' => ['user_id' => $id], 'where_in' => [], 'like' => [],
                     'group_by' => '', 'order_by' => '', 'limit' => [],];
 
-                $temp_donar_organ = $this->common->table_details($fields)->row_array();
-                
-                /////////////////////////
-                    $aviltemp = (!empty($organ_avail[$organ_id])) ? '1' : '0';
+                $all_donororgan = $this->common->table_details($fields)->result_array();
+                $all_donororgan = (!empty($all_donororgan)) ? array_column($all_donororgan, "id", "organ_id") : [];
+
+                foreach ($organs as $organ_id => $val) {
+
+                    /////////////////////////
+                    $aviltemp = (isset($organ_avail[$organ_id])) ? '1' : '0';
                     $organ_details = array(
                         'user_id' => $id,
                         'organ_id' => $organ_id,
                         'status' => $aviltemp,
                     );
-                    if(empty($temp_donar_organ['id'])){
-                    $organ_ids[]=$this->common->save_table_details('donar_organs', $organ_details);
-                    }else{
-                        $organ_ids[] = $temp_donar_organ['id'];
-                     $this->common->update_table_details('donar_organs', $organ_details, ['id' => $temp_donar_organ['id']]);   
+                    if (array_key_exists($organ_id, $all_donororgan)) {
+                        $this->common->update_table_details('donar_organs', $organ_details, ['id' => $all_donororgan[$organ_id]]);
+                        unset($all_donororgan[$organ_id]);
+                    } else {
+                        $this->common->save_table_details('donar_organs', $organ_details);
                     }
                 }
-                if(!empty($organ_ids)){
-                    $where =['id' => '1'];
-                   $this->common->delete_table_details('donar_organs', $where); 
+                if (!empty($all_donororgan)) {
+                    foreach ($all_donororgan as $organ_id) {
+                        $where = ['id' => $organ_id];
+                        $this->common->delete_table_details('donar_organs', $where);
+                    }
                 }
                 /////////////////////
                 $msg = (empty($responseuser) && empty($responsepersonal)) ? 'Not able to update try again' : 'Successfully Updated';

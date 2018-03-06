@@ -33,6 +33,10 @@ Class Common extends CI_Model {
         $this->db->where_in($where);
         return $this->db->delete('$table');
     }
+    function delete_notin($table, $where) {
+        $where = implode(",", $where);
+        return $this->db->query("DELETE FROM $table WHERE id IN ($where)");
+    }
 
     public function table_details_join($data) {
         $this->db->select($data['select'], FALSE);

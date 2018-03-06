@@ -18,7 +18,7 @@
         if($user['role'] == 'admin'){
          $response['menu'] = [
             'Home' => ['class' => '', 'url' => 'admin'],
-            'Donar Registration' => ['class' => '', 'url' => 'admin/donar_registration'],
+            'Donar Registration' => ['class' => '', 'url' => 'home/donar_registration'],
             'Hospital Registration' => ['class' => '', 'url' => 'admin/hospital_registration'],
             'Site Home' => [ 'class' => '', 'url' => ''],
             'About Us' => [ 'class' => '', 'url' => 'home/about_us'],
@@ -31,7 +31,7 @@
         }elseif($user[role] == 'donar'){
          $response['menu'] = [
             'Home' => ['class' => '', 'url' => 'donar'],
-            'Donar Registration' => ['class' => '', 'url' => 'admin/donar_registration'],
+            'Donar Registration' => ['class' => '', 'url' => 'home/donar_registration'],
         ];
         $response['menutop'] = [
             'Change Password' => ['class' => '', 'url' => 'admin/change_password'],
@@ -40,5 +40,4 @@
         }
     }
         return $response;
-//        echo $ci->email->print_debugger();
     }
