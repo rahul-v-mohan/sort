@@ -90,41 +90,56 @@ class Home extends CI_Controller {
         ];
         $data['action_page'] = 'home/donar_reg_save';
         $data['form_method'] = 'insert';
-        $data['record_view'] = '0';
+        /////// View permission
+        $user_data = $this->session->userdata('USER');
+        $data['record_view'] = ($user_data['role'] == 'admin') ? 1 : 0;
+        if($data['record_view'] == 1){
+                        $fields = array(
+                'table1' => 'user u',
+                'table2' => 'personal_details p',
+                'condition2' => 'u.id = p.user_id',
+                'join2' => 'inner', 'select' => 'u.*,p.name,p.gender,p.mobile', 'where' => [],
+                'where_in' => [], 'like' => [], 'group_by' => '',
+                'order_by' => '', 'limit' => array());
+            $data['donar_datas'] = $this->common->table_details_join($fields)->result_array();
+        }
+        ///////////////////////
         $data['form_data'] = [
-            'name' => '',
-            'dob' => '',
-            'email' => '',
-            'mobile' => '',
-            'gender' => '',
-            'status' => '1',
-            'house_name' => '',
-            'location' => '',
-            'district' => '',
-            'state' => '',
-            'height' => '',
-            'weight' => '',
-            'blood_group' => '',
-            'health_remark' => '',
+            'name' => '','dob' => '','email' => '',
+            'mobile' => '','gender' => '','status' => '1',
+            'house_name' => '','location' => '','district' => '',
+            'state' => '','height' => '','weight' => '',
+            'blood_group' => '','health_remark' => '','organ' => '',
+            'organ_avail' => '',
             'user_id' => '0',
         ];
-            $fields = [
-                'table' => 'organs','select' => '*',
-                'where' =>[],'where_in' => [],'like' => [],
-                'group_by' => '', 'order_by' => 'organ', 'limit' => [],];
-            
-            $data['organs'] = $this->common->table_details($fields)->result_array();
+        $fields = [
+            'table' => 'organs', 'select' => '*',
+            'where' => [], 'where_in' => [], 'like' => [],
+            'group_by' => '', 'order_by' => 'organ', 'limit' => [],];
+
+        $data['organs'] = $this->common->table_details($fields)->result_array();
         if (!empty($id)) {
             $fields = array(
                 'table1' => 'user u',
                 'table2' => 'personal_details p',
                 'condition2' => 'u.id = p.user_id',
-                'join2' => 'inner','select' => '*','where' => ['u.id' => $id],
-                'where_in' => [],  'like' => [],'group_by' => '',
+                'join2' => 'inner', 'select' => '*', 'where' => ['u.id' => $id],
+                'where_in' => [], 'like' => [], 'group_by' => '',
                 'order_by' => '', 'limit' => array());
             $result = $this->common->table_details_join($fields);
             if ($result->num_rows() == 1) {
                 $data['form_data'] = $result->row_array();
+                ///////// organ /////////
+                $fields = [
+                    'table' => 'donar_organs', 'select' => '*',
+                    'where' => ['user_id' => $id], 'where_in' => [], 'like' => [],
+                    'group_by' => '', 'order_by' => '', 'limit' => [],];
+
+                $temp = $this->common->table_details($fields)->result_array();
+                $data['form_data']['organs'] = (!empty($temp)) ? array_column($temp, 'organ_id', 'id') : [];
+                $data['form_data']['organs_avail'] = (!empty($temp)) ? array_column($temp, 'status', 'id') : [];
+                ///////////////////////
                 $data['form_method'] = 'update';
             }
         }
@@ -176,6 +191,9 @@ class Home extends CI_Controller {
                 'blood_group' => $this->input->post('blood_group'),
                 'health_remark' => $this->input->post('health_remark'),
             );
+            $organs = $this->input->post('organ');
+            $organ_avail = $this->input->post('organ_avail');
+
             if ($this->input->post('method') == 'insert') {
                 //password creation
                 $data_reg['password'] = '';
@@ -188,6 +206,18 @@ class Home extends CI_Controller {
                 $insert_id = $this->common->save_table_details('user', $data_reg);
                 $data_personal['user_id'] = $insert_id;
                 $response = $this->common->save_table_details('personal_details', $data_personal);
+
+                //Organ Management
+                foreach ($organs as $organ_id) {
+                    $aviltemp = (!empty($organ_avail[$organ_id])) ? '1' : '0';
+                    $organ_details = array(
+                        'user_id' => $data_personal['user_id'],
+                        'organ_id' => $organ_id,
+                        'status' => $aviltemp,
+                    );
+                    $this->common->save_table_details('donar_organs', $organ_details);
+                }
+                ////////////////////////////////
                 $msg = (empty($response)) ? 'Not able to insert try again' : 'Successfully Inserted';
                 if (!empty($response)) {
                     $html = <<<rahul
@@ -202,12 +232,42 @@ rahul;
                 $where = ['id' => $id];
                 $responseuser = $this->common->update_table_details('user', $data_reg, $where);
                 $responsepersonal = $this->common->update_table_details('personal_details', $data_personal, ['user_id' => $id]);
+                // Organ      
+                $organ_ids=[];
+                foreach ($organs as $organ_id) {
+                                    $fields = [
+                    'table' => 'donar_organs', 'select' => 'id',
+                    'where' => ['user_id' => $id,'organ_id'=>$organ_id], 'where_in' => [], 'like' => [],
+                    'group_by' => '', 'order_by' => '', 'limit' => [],];
+
+                $temp_donar_organ = $this->common->table_details($fields)->row_array();
+                
+                /////////////////////////
+                    $aviltemp = (!empty($organ_avail[$organ_id])) ? '1' : '0';
+                    $organ_details = array(
+                        'user_id' => $id,
+                        'organ_id' => $organ_id,
+                        'status' => $aviltemp,
+                    );
+                    if(empty($temp_donar_organ['id'])){
+                    $organ_ids[]=$this->common->save_table_details('donar_organs', $organ_details);
+                    }else{
+                        $organ_ids[] = $temp_donar_organ['id'];
+                     $this->common->update_table_details('donar_organs', $organ_details, ['id' => $temp_donar_organ['id']]);   
+                    }
+                }
+                if(!empty($organ_ids)){
+                    $where =['id' => '1'];
+                   $this->common->delete_table_details('donar_organs', $where); 
+                }
+                /////////////////////
                 $msg = (empty($responseuser) && empty($responsepersonal)) ? 'Not able to update try again' : 'Successfully Updated';
                 $this->session->set_flashdata('msg', $msg);
             }
         }
         redirect('home/donar_registration');
     }
+
     public function donar_delete() {
 
         $id = $this->input->post('id');
@@ -217,6 +277,7 @@ rahul;
         $this->session->set_flashdata('msg', $msg);
         redirect('home/donar_registration');
     }
+
     /*
      * Forget Password
      */
@@ -283,7 +344,7 @@ rahul;
     }
 
     public function logout() {
-        
+
         $this->session->sess_destroy();
         redirect('home/login', 'refresh');
     }

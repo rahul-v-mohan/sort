@@ -158,8 +158,8 @@ $bloodgrouplist = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
                                         <tr>
                                             
                                             <td><label><?php echo $organ['organ']; ?></label></td>
-                                            <td> <input type="checkbox"  id="organ-<?php echo $organ['id']; ?>" name="organ[<?php echo $organ['id']; ?>]"   value="1" ></td>
-                                            <td> <input type="checkbox"  id="organ-avail-<?php echo $organ['id']; ?>" name="organ_avail[<?php echo $organ['id']; ?>]"   value="1"  ></td>
+                                            <td> <input type="checkbox"  id="organ-<?php echo $organ['id']; ?>" name="organ[<?php echo $organ['id']; ?>]"   value="1" <?php echo set_checkbox('organ['.$organ['id'].']', '1',(!empty($form_data['organs'][$organ['id']])) ? TRUE : FALSE);  ?> /> </td>
+                                            <td> <input type="checkbox"  id="organ-avail-<?php echo $organ['id']; ?>" name="organ_avail[<?php echo $organ['id']; ?>]"   value="1"  <?php echo set_checkbox('organ_avail['.$organ['id'].']', '1',(!empty($form_data['organs_avail'][$organ['id']])) ? TRUE : FALSE);  ?>></td>
                                     </tr>
                         <?php } ?>
                   </table>
