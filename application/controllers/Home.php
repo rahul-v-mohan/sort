@@ -10,8 +10,6 @@ class Home extends CI_Controller {
         parent::__construct();
 
         $this->load->model('common');
-        $this->load->helper('role_menu');
-        
         $this->load->helper('rolemenu');
         $temp = getmenu();
         $this->menu = $temp['menu'];
@@ -107,24 +105,23 @@ class Home extends CI_Controller {
             'height' => '',
             'weight' => '',
             'blood_group' => '',
-            'blood_donatewilling' => '',
             'health_remark' => '',
             'user_id' => '0',
         ];
-
+            $fields = [
+                'table' => 'organs','select' => '*',
+                'where' =>[],'where_in' => [],'like' => [],
+                'group_by' => '', 'order_by' => 'organ', 'limit' => [],];
+            
+            $data['organs'] = $this->common->table_details($fields)->result_array();
         if (!empty($id)) {
             $fields = array(
                 'table1' => 'user u',
                 'table2' => 'personal_details p',
                 'condition2' => 'u.id = p.user_id',
-                'join2' => 'inner',
-                'select' => '*',
-                'where' => ['u.id' => $id],
-                'where_in' => [],
-                'like' => [],
-                'group_by' => '',
-                'order_by' => '',
-                'limit' => array());
+                'join2' => 'inner','select' => '*','where' => ['u.id' => $id],
+                'where_in' => [],  'like' => [],'group_by' => '',
+                'order_by' => '', 'limit' => array());
             $result = $this->common->table_details_join($fields);
             if ($result->num_rows() == 1) {
                 $data['form_data'] = $result->row_array();
@@ -177,7 +174,6 @@ class Home extends CI_Controller {
                 'weight' => $this->input->post('weight'),
                 'height' => $this->input->post('height'),
                 'blood_group' => $this->input->post('blood_group'),
-                'blood_donatewilling' => $this->input->post('blood_donatewilling'),
                 'health_remark' => $this->input->post('health_remark'),
             );
             if ($this->input->post('method') == 'insert') {
@@ -212,7 +208,15 @@ rahul;
         }
         redirect('home/donar_registration');
     }
+    public function donar_delete() {
 
+        $id = $this->input->post('id');
+        $where = ['id' => $id];
+        $response = $this->common->delete_table_details('user', $where);
+        $msg = (empty($response)) ? 'Not able to delete try again' : 'Successfully Deleted';
+        $this->session->set_flashdata('msg', $msg);
+        redirect('home/donar_registration');
+    }
     /*
      * Forget Password
      */
