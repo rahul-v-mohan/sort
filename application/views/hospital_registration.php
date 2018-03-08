@@ -40,109 +40,39 @@ $page_url ='admin/hospital_registration';
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Location <span class="mandatory">*</span></label>
-                                        <input type="text" class="form-control" id="location" name="location" placeholder="Location" value="<?php echo set_value('location', $form_data['location']); ?>">
-                                    <?php echo form_error('location', '<label class ="error">', '</label>'); ?>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>District <span class="mandatory">*</span></label>
-                                        <input type="text" class="form-control" id="district" name="district" placeholder="District" value="<?php echo set_value('district', $form_data['district']); ?>">
-                                    <?php echo form_error('district', '<label class ="error">', '</label>'); ?>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>State <span class="mandatory">*</span></label>
-                                        <input type="text" class="form-control" id="state" name="state" placeholder="State" value="<?php echo set_value('state', $form_data['state']); ?>">
-                                    <?php echo form_error('state', '<label class ="error">', '</label>'); ?>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Mobile <span class="mandatory">*</span></label>
-                                        <input type="text" class="form-control" id="hospital_mobile" name="hospital_mobile" placeholder="Hospital Number" value="<?php echo set_value('hospital_mobile', $form_data['hospital_mobile']); ?>">
-                                    <?php echo form_error('hospital_mobile', '<label class ="error">', '</label>'); ?>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Email <span class="mandatory">*</span></label>
-                                        <input type="text" class="form-control" id="district" name="district" placeholder="District" value="<?php echo set_value('district', $form_data['district']); ?>">
-                                    <?php echo form_error('district', '<label class ="error">', '</label>'); ?>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Website Url <span class="mandatory">*</span></label>
-                                        <input type="text" class="form-control" id="state" name="state" placeholder="State" value="<?php echo set_value('state', $form_data['state']); ?>">
-                                    <?php echo form_error('state', '<label class ="error">', '</label>'); ?>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Name <span class="mandatory">*</span></label>
-                                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter Your name" value="<?php echo set_value('name', $form_data['name']); ?>">
-                                    <?php echo form_error('name', '<label class ="error">', '</label>'); ?>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Email <span class="mandatory">*</span></label>
-                                        <input type="text" class="form-control" id="email" name="email" placeholder="Enter Your Valid Email" value="<?php echo set_value('email', $form_data['email']); ?>">
-                                    <?php echo form_error('email', '<label class ="error">', '</label>'); ?>
-                                    </div>
-                                </div>
-                            </div>
+
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Mobile <span class="mandatory">*</span></label>
-                                        <input type="text" class="form-control" id="mobile" name="mobile" maxlength="10" placeholder="Enter Your Mobile Number" value="<?php echo set_value('mobile', $form_data['mobile']); ?>">
+                                        <input type="text" class="form-control" id="mobile" name="mobile" placeholder="Hospital Number" maxlength="10" value="<?php echo set_value('mobile', $form_data['mobile']); ?>">
                                     <?php echo form_error('mobile', '<label class ="error">', '</label>'); ?>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Date Of Birth <span class="mandatory">*</span></label>
-                                        <input type="text" class="form-control" id="dob" name="dob"  placeholder="DOB" value="<?php echo set_value('dob', $form_data['dob']); ?>">
-                                    <?php echo form_error('dob', '<label class ="error">', '</label>'); ?>
+                                        <label>Website Url </label>
+                                        <input type="text" class="form-control" id="website_url" name="website_url" placeholder="Website URL" value="<?php echo set_value('website_url', $form_data['website_url']); ?>">
+                                    <?php echo form_error('website_url', '<label class ="error">', '</label>'); ?>
                                     </div>
                                 </div>
-                                    </div>
+                            </div>
                             <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>House Name <span class="mandatory">*</span></label>
-                                        <input type="text" class="form-control" id="house_name" name="house_name" placeholder="House Name" value="<?php echo set_value('house_name', $form_data['house_name']); ?>">
-                                    <?php echo form_error('house_name', '<label class ="error">', '</label>'); ?>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Location <span class="mandatory">*</span></label>
                                         <input type="text" class="form-control" id="location" name="location" placeholder="Location" value="<?php echo set_value('location', $form_data['location']); ?>">
                                     <?php echo form_error('location', '<label class ="error">', '</label>'); ?>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label>District <span class="mandatory">*</span></label>
                                         <input type="text" class="form-control" id="district" name="district" placeholder="District" value="<?php echo set_value('district', $form_data['district']); ?>">
                                     <?php echo form_error('district', '<label class ="error">', '</label>'); ?>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group">
                                         <label>State <span class="mandatory">*</span></label>
                                         <input type="text" class="form-control" id="state" name="state" placeholder="State" value="<?php echo set_value('state', $form_data['state']); ?>">
@@ -153,14 +83,20 @@ $page_url ='admin/hospital_registration';
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Gender <span class="mandatory">*</span></label>
-                                        <div class="options">
-                                            <label>Male</label><input type="radio"  id="gender-m" name="gender"  value="Male" <?php echo set_radio('gender', 'Male',($form_data['gender'] =='Male')?TRUE:FALSE); ?>>
-                                            <label>Female</label><input type="radio"  id="gender" name="gender"  value="Female" <?php echo set_radio('gender', 'Female',($form_data['gender'] =='Female')?TRUE:FALSE); ?>>
-                                        <?php echo form_error('gender', '<label class ="error">', '</label>'); ?>
-                                        </div>
+                                        <label>Username </label>
+                                        <input type="text" class="form-control" id="email" name="email" placeholder="Enter Your Valid Email" value="<?php echo set_value('email', $form_data['email']); ?>">
+                                    <?php echo form_error('email', '<label class ="error">', '</label>'); ?>
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Email <span class="mandatory">*</span></label>
+                                        <input type="text" class="form-control" id="email_hospital" name="email_hospital" placeholder="Enter Hospital Email" value="<?php echo set_value('email_hospital', $form_data['email_hospital']); ?>">
+                                    <?php echo form_error('email_hospital', '<label class ="error">', '</label>'); ?>
+                                    </div>
+                                </div>
+                                    </div>
+                            <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Login Status</label>
@@ -168,6 +104,8 @@ $page_url ='admin/hospital_registration';
                                             <label>Set To Active</label><input type="checkbox"  id="status" name="status"   value="1"  <?php echo set_checkbox('status', '1',($form_data['status'] =='1')?TRUE:FALSE); ?> >
                                         </div>
                                     </div>
+                                </div>
+                                <div class="col-md-6">
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-info btn-fill pull-right">Submit</button>
@@ -189,10 +127,10 @@ $page_url ='admin/hospital_registration';
                                     <table class="table table-hover table-striped">
                                         <thead>
                                             <th>Sl No.</th>
-                                            <th>Name</th>
+                                            <th>Hospital Name</th>
                                             <th>Mobile</th>
+                                            <th>Username</th>
                                             <th>Email</th>
-                                            <th>Gender</th>
                                             <th>Status</th>
                                             <th>Edit</th>
                                             <th>Delete</th>
@@ -206,10 +144,10 @@ $page_url ='admin/hospital_registration';
                                                 ?>
                                             <tr>
                                                 <td><?php echo $slno++; ?></td>
-                                                <td><?php echo $row['name']; ?></td>
+                                                <td><?php echo $row['hospital_name']; ?></td>
                                                 <td><?php echo $row['mobile']; ?></td>
                                                 <td><?php echo $row['email']; ?></td>
-                                                <td><?php echo $row['gender']; ?></td>
+                                                <td><?php echo $row['email_hospital']; ?></td>
                                                 <td><?php echo $row['status']; ?></td>
                                                 <td><a href="<?php echo base_url($page_url.'/'.$row['id']);?>"><button type="button" class="btn">Edit</button></a></td>
                                                 <td>

@@ -8,7 +8,7 @@ class Home extends CI_Controller {
 
     function __construct() {
         parent::__construct();
-
+//        $this->output->enable_profiler(TRUE);
         $this->load->model('common');
         $this->load->helper('rolemenu');
         $temp = getmenu();
@@ -84,7 +84,6 @@ class Home extends CI_Controller {
 
     ///////////////////////////////////////////////////////////////////////////////
     public function donar_registration($id = 0) {
-//        $this->output->enable_profiler(TRUE);
         $foot = [
             'js_files' => ['JS/form/donar_registration.js'],
         ];

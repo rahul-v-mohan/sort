@@ -8,6 +8,7 @@ class Admin extends CI_Controller {
 
     function __construct() {
         parent::__construct();
+//        $this->output->enable_profiler(TRUE);
         $this->load->model('common');
         
         $this->load->helper('rolemenu');
@@ -40,46 +41,40 @@ class Admin extends CI_Controller {
         ];
         $data['form_method'] = 'insert';
         $data['form_data'] = [
-            'name' => '',
-            'dob' => '',
-            'email' => '',
-            'mobile' => '',
-            'gender' => '',
-            'status' => '1',
-            'house_name' => '',
-            'location' => '',
-            'district' => '',
-            'state' => '',
+            'email' => '','hospital_name' => '','email_hospital' => '',
+            'mobile' => '','website_url' => '','status' => '1',
+            'location' => '','district' => '','state' => '',
             'id' => '0',
         ];
 
+                $fields = array(
+            'table1' => 'user u',
+            'table2' => 'hospital h',
+            'condition2' => 'u.id = h.user_id',
+            'join2' => 'inner', 
+            'select' => 'u.id,u.email,u.status,h.hospital_name,h.email_hospital,h.website_url,h.mobile', 
+            'where' => [],
+            'where_in' => [], 'like' => [], 'group_by' => '',
+            'order_by' => '', 'limit' => array());
+        $data['hospital_datas'] = $this->common->table_details_join($fields)->result_array();
         if (!empty($id)) {
-            $fields = [
-                'table' => 'user',
-                'select' => array_keys($data['form_data']),
-                'where' => ['id' => $id],
-                'where_in' => [],
-                'like' => [],
-                'group_by' => '',
-                'order_by' => '',
-                'limit' => [],];
-            $result = $this->common->table_details($fields);
+            $fields = array(
+                'table1' => 'user u',
+                'table2' => 'hospital h',
+                'condition2' => 'u.id = h.user_id',
+                'join2' => 'inner',
+                'select' => 'u.id,u.email,u.status,h.hospital_name,h.email_hospital,h.website_url,h.location,h.district,h.state,h.mobile',
+                'where' => ['u.id' => $id],
+                'where_in' => [], 'like' => [], 'group_by' => '',
+                'order_by' => '', 'limit' => array());
+            
+            $result = $this->common->table_details_join($fields);
             if ($result->num_rows() == 1) {
                 $data['form_data'] = $result->row_array();
                 $data['form_method'] = 'update';
             }
         }
 
-        $fields = [
-            'table' => 'user',
-            'select' => array_keys($data['form_data']),
-            'where' => ['role' => 'hospital'],
-            'where_in' => [],
-            'like' => [],
-            'group_by' => '',
-            'order_by' => '',
-            'limit' => [],];
-        $data['hospital_datas'] = $this->common->table_details($fields)->result_array();
 
         $this->load->view('header_site.php', ['menu' => $this->menu, 'top_menu'=>$this->menutop]);
         $this->load->view('hospital_registration.php', $data);
@@ -91,12 +86,8 @@ class Admin extends CI_Controller {
         $id = $this->input->post('id');
 
 
-        $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
-        $this->form_validation->set_rules('name', 'Name', 'required');
-        $this->form_validation->set_rules('dob', 'Date Of Birth', 'required');
-        $this->form_validation->set_rules('gender', 'Gender', 'required');
-        $this->form_validation->set_rules('mobile', 'mobile', 'required');
-        $this->form_validation->set_rules('house_name', 'House name', 'required');
+        $this->form_validation->set_rules('email', 'Username', 'required|valid_email');
+        $this->form_validation->set_rules('hospital_name', 'Hospital Name', 'required');
         $this->form_validation->set_rules('location', 'Location', 'required');
         $this->form_validation->set_rules('district', 'District', 'required');
         $this->form_validation->set_rules('state', 'State', 'required');
@@ -110,16 +101,17 @@ class Admin extends CI_Controller {
 
             $data = array(
                 'email' => $this->input->post('email'),
-                'name' => $this->input->post('name'),
-                'dob' => $this->input->post('dob'),
-                'gender' => $this->input->post('gender'),
+                'status' => $this->input->post('status'),
+                'role' => 'hospital',
+            );
+            $hospital_data = array(
+                'email_hospital' => $this->input->post('email_hospital'),
+                'hospital_name' => $this->input->post('hospital_name'),
+                'website_url' => $this->input->post('website_url'),
                 'mobile' => $this->input->post('mobile'),
-                'house_name' => $this->input->post('house_name'),
                 'location' => $this->input->post('location'),
                 'district' => $this->input->post('district'),
                 'state' => $this->input->post('state'),
-                'status' => $this->input->post('status'),
-                'role' => 'hospital',
             );
             if ($this->input->post('method') == 'insert') {
                 //password creation
@@ -130,7 +122,9 @@ class Admin extends CI_Controller {
                     $data['password'] .= $alphabets[$temp];
                 }
                 ///////////////////////////////   
-                $response = $this->common->save_table_details('user', $data);
+                $insert_id = $this->common->save_table_details('user', $data);
+                $hospital_data['user_id'] = $insert_id;
+                $response = $this->common->save_table_details('hospital', $hospital_data);
                 $msg = (empty($response)) ? 'Not able to insert try again' : 'Successfully Inserted';
                 if (!empty($response)) {
                     $html = <<<rahul
@@ -144,6 +138,7 @@ rahul;
             } else if ($this->input->post('method') == 'update') {
                 $where = ['id' => $id];
                 $this->common->update_table_details('user', $data, $where);
+                $response = $this->common->update_table_details('hospital', $hospital_data, ['user_id' => $id]);
                 $msg = (empty($response)) ? 'Not able to update try again' : 'Successfully Updated';
                 $this->session->set_flashdata('msg', $msg);
             }
