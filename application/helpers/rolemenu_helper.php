@@ -20,7 +20,7 @@
             'Home' => ['class' => '', 'url' => 'admin'],
             'Donar Registration' => ['class' => '', 'url' => 'home/donar_registration'],
             'Hospital Registration' => ['class' => '', 'url' => 'admin/hospital_registration'],
-            'Site Home' => [ 'class' => '', 'url' => ''],
+            'Patient Registration' => [ 'class' => '', 'url' => 'hospital/patient_registration'],
             'About Us' => [ 'class' => '', 'url' => 'home/about_us'],
             'Contact Us' => [ 'class' => '', 'url' => 'home/contact'],
         ];
