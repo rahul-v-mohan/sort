@@ -17,13 +17,13 @@ class Home extends CI_Controller {
     }
 
     public function index() {
-        $this->load->view('header_site.php', ['menu' => $this->menu]);
+        $this->load->view('header_site.php', ['menu' => $this->menu,'menutop'=>$this->menutop]);
         $this->load->view('login.php');
         $this->load->view('footer.php');
     }
 
     public function about_us() {
-        $this->load->view('header_site.php', ['menu' => $this->menu]);
+        $this->load->view('header_site.php', ['menu' => $this->menu,'menutop'=>$this->menutop]);
         $this->load->view('aboutus.php');
         $this->load->view('footer.php');
     }
@@ -33,7 +33,7 @@ class Home extends CI_Controller {
      */
 
     public function login() {
-        $this->load->view('header_site.php', ['menu' => $this->menu]);
+        $this->load->view('header_site.php', ['menu' => $this->menu,'menutop'=>$this->menutop]);
         $this->load->view('login.php');
         $this->load->view('footer.php');
     }
@@ -145,7 +145,7 @@ class Home extends CI_Controller {
             }
         }
 
-        $this->load->view('header_site.php', ['menu' => $this->menu]);
+        $this->load->view('header_site.php', ['menu' => $this->menu,'menutop'=>$this->menutop]);
         $this->load->view('donar_registration.php', $data);
         $this->load->view('footer.php', $foot);
     }
@@ -288,7 +288,7 @@ rahul;
      */
 
     public function forget_password() {
-        $this->load->view('header_site.php', ['menu' => $this->menu]);
+        $this->load->view('header_site.php', ['menu' => $this->menu,'menutop'=>$this->menutop]);
         $this->load->view('forget_password.php');
         $this->load->view('footer.php');
     }
@@ -343,9 +343,45 @@ rahul;
 
 /////////////////////////////////////////////////////////////
     public function contact() {
-        $this->load->view('header_site.php', ['menu' => $this->menu]);
+        $this->load->view('header_site.php', ['menu' => $this->menu,'menutop'=>$this->menutop]);
         $this->load->view('contact.php');
         $this->load->view('footer.php');
+    }
+    public function contact_process() {
+        $this->load->helper('mailrahul');
+        $data = array(
+            'name' => $this->input->post('name'),
+            'mobile' => $this->input->post('mobile'),
+            'message' => $this->input->post('message'),
+            'email' => $this->input->post('email'),
+        );
+        $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+        $this->form_validation->set_rules('mobile', 'Mobile', 'required|exact_length[10]|integer');
+        $this->form_validation->set_rules('name', 'Email', 'required');
+        $this->form_validation->set_rules('message', 'Message', 'required');
+        if ($this->form_validation->run() == FALSE) {
+            $this->contact();
+            return;
+        } else {
+                    $html = <<<rahul
+                 <h4> Contact Mail </h4>         
+                  Name: {$data['name']} </br>
+                  Email: {$data['email']} </br>
+                  Mobile: {$data['mobile']} </br>
+                  Message: {$data['message']} </br>
+rahul;
+                    $responseuser=getemail("rahul.mohan@ipsrsolutions.com", 'Contact Mail', $html);
+            $msg = (empty($responseuser)) ? 'Not Able to Send Mail!! Try Again' : 'Your enquiry is send successfully';
+            $this->session->set_flashdata('msg', $msg);
+            redirect('home/contact', 'refresh');
+        }
+    }
+    public function account_deactivate() {
+        $user_data = $this->session->userdata('USER');
+        if(!empty($user_data['id'])){
+                $responseuser = $this->common->update_table_details('user', ['status' =>0], ['id' => $user_data['id'] ]);
+        }
+         $this->logout();
     }
 
     public function logout() {

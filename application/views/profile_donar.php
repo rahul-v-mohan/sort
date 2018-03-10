@@ -1,47 +1,183 @@
 <?php
-$page_title = 'Profile';
+$page_title = 'Donar Profile';
+$action_page = 'donar/profile_update';
+
+$bloodgrouplist = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
 ?>
-
-    
-    <div class="content">
+<!-- End Navbar -->
+<div class="content">
     <div class="container-fluid">
-            <?php 
-                  $msg=$this->session->flashdata('msg');
-                  if($msg){
-                ?>
-                <div class="container">
+        <?php
+        $msg = $this->session->flashdata('msg');
+        if ($msg) {
+            ?>
+            <div class="container">
 
-                    <div class="alert alert-warning   alert-dismissable">
-                        <strong>INFO</strong> 
-                        <?php echo $msg;  ?> 
-                        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-                    </div>
+                <div class="alert alert-warning   alert-dismissable">
+                    <strong>INFO</strong> 
+                    <?php echo $msg; ?> 
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
                 </div>
-            <?php } ?>
-        <?php if(!empty($profile)){ ?> 
+            </div>
+        <?php } ?>
         <div class="row">
-            <div class="col-md-3"></div>
-                        <div class="col-md-6">
-                            <div class="card  table-plain-bg">
-                                <div class="card-header ">
-                                    <h4 class="card-title"><?php echo $page_title;?></h4>
-<!--                                    <p class="card-category">Manage users here</p>-->
-                                </div>
-                                <div class="card-body ">
-                                    <table class="table table-hover ">
-                                                                          <!--<tbody>-->
-                                            <tr><td>Name</td><th><?php echo $profile['name']; ?></th></tr>
-                                            <tr><td>Gender</td><th><?php echo $profile['gender']; ?></th></tr>
-                                            <tr><td>Date Of Birth</td><th><?php echo $profile['dob']; ?></th></tr>
-                                            <tr><td>Mobile</td><th><?php echo $profile['mobile']; ?></th></tr>
-                                        <!--</tbody>-->
-                                    </table>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title"><?= $page_title ?></h4>
+                    </div>
+                    <div class="card-body">
+
+                        <form id="donar_registration" method="post" action="<?php echo base_url($action_page); ?>">
+                            <input type="hidden" class="form-control"  name="id" value="<?php echo $form_data['user_id']; ?>">
+                            <input type="hidden" class="form-control"  name="method" value="<?php echo $form_method; ?>">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Name <span class="mandatory">*</span></label>
+                                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter Your name" value="<?php echo set_value('name', $form_data['name']); ?>">
+                                        <?php echo form_error('name', '<label class ="error">', '</label>'); ?>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Email <span class="mandatory">*</span></label>
+                                        <input type="text" class="form-control" id="email" name="email" placeholder="Enter Your Valid Email" value="<?php echo set_value('email', $form_data['email']); ?>">
+                                        <?php echo form_error('email', '<label class ="error">', '</label>'); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Mobile <span class="mandatory">*</span></label>
+                                        <input type="text" class="form-control" id="mobile" name="mobile" maxlength="10" placeholder="Enter Your Mobile Number" value="<?php echo set_value('mobile', $form_data['mobile']); ?>">
+                                        <?php echo form_error('mobile', '<label class ="error">', '</label>'); ?>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Date Of Birth <span class="mandatory">*</span></label>
+                                        <input type="text" class="form-control" id="dob" name="dob"  placeholder="DOB" value="<?php echo set_value('dob', $form_data['dob']); ?>">
+                                        <?php echo form_error('dob', '<label class ="error">', '</label>'); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>House Name <span class="mandatory">*</span></label>
+                                        <input type="text" class="form-control" id="house_name" name="house_name" placeholder="House Name" value="<?php echo set_value('house_name', $form_data['house_name']); ?>">
+                                        <?php echo form_error('house_name', '<label class ="error">', '</label>'); ?>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Location <span class="mandatory">*</span></label>
+                                        <input type="text" class="form-control" id="location" name="location" placeholder="Location" value="<?php echo set_value('location', $form_data['location']); ?>">
+                                        <?php echo form_error('location', '<label class ="error">', '</label>'); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>District <span class="mandatory">*</span></label>
+                                        <input type="text" class="form-control" id="district" name="district" placeholder="District" value="<?php echo set_value('district', $form_data['district']); ?>">
+                                        <?php echo form_error('district', '<label class ="error">', '</label>'); ?>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>State <span class="mandatory">*</span></label>
+                                        <input type="text" class="form-control" id="state" name="state" placeholder="State" value="<?php echo set_value('state', $form_data['state']); ?>">
+                                        <?php echo form_error('state', '<label class ="error">', '</label>'); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Height</label>
+                                        <input type="text" class="form-control" id="height" name="height" placeholder="Height (Centimetres)" value="<?php echo set_value('height', $form_data['height']); ?>">
+                                        <?php echo form_error('height', '<label class ="error">', '</label>'); ?>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Weight</label>
+                                        <input type="text" class="form-control" id="weight" name="weight" placeholder="Weight (Kilograms)" value="<?php echo set_value('weight', $form_data['weight']); ?>">
+                                        <?php echo form_error('weight', '<label class ="error">', '</label>'); ?>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Blood Group <span class="mandatory">*</span></label>
+                                        <select id="blood_group" name="blood_group" class="form-control">
+                                            <option value="">Select</option>
+                                            <?php foreach ($bloodgrouplist as $temp) { ?>
+                                                <option  <?php echo set_select('blood_group', $temp, ($form_data['blood_group'] == $temp) ? TRUE : FALSE); ?> value="<?php echo $temp; ?>"><?php echo $temp; ?></option>
+                                            <?php } ?>
+                                        </select>
+                                        <?php echo form_error('blood_group', '<label class ="error">', '</label>'); ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Gender <span class="mandatory">*</span></label>
+                                        <div class="options">
+                                            <label>Male</label><input type="radio"  id="gender-m" name="gender"  value="Male" <?php echo set_radio('gender', 'Male', ($form_data['gender'] == 'Male') ? TRUE : FALSE); ?>>
+                                            <label>Female</label><input type="radio"  id="gender" name="gender"  value="Female" <?php echo set_radio('gender', 'Female', ($form_data['gender'] == 'Female') ? TRUE : FALSE); ?>>
+                                            <?php echo form_error('gender', '<label class ="error">', '</label>'); ?>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <?php if (!empty($record_view)) { ?> 
+                                        <div class="form-group">
+                                            <label>Login Status</label>
+                                            <div class="options">
+                                                <label>Set To Active</label><input type="checkbox"  id="status" name="status"   value="1"  <?php echo set_checkbox('status', '1', ($form_data['status'] == '1') ? TRUE : FALSE); ?> >
+                                            </div>
+                                        </div>
+                                    <?php } else { ?>
+                                        <input type="hidden"   name="status"   value="<?php echo $form_data['status']; ?>" >        
+                                    <?php } ?>
+                                </div>
+                            </div>
+                            <?php if (!empty($organs)) { ?>
+                <div class="card-body table-full-width table-responsive">
+                    <table class="table table-hover table-striped">
+                                        <tr><th>Organ</th><th>Willing To Donate</th><th>Organ Ready</th></tr>
+                                    <?php foreach ($organs as $organ) { ?>
+                                        <tr>
+                                            
+                                            <td><label><?php echo $organ['organ']; ?></label></td>
+                                            <td> <input type="checkbox"  id="organ-<?php echo $organ['id']; ?>" name="organ[<?php echo $organ['id']; ?>]"   value="1" <?php echo set_checkbox('organ['.$organ['id'].']', '1',(in_array($organ['id'],$form_data['organs'])) ? TRUE : FALSE);  ?> /> </td>
+                                            <td> <input type="checkbox"  id="organ-avail-<?php echo $organ['id']; ?>" name="organ_avail[<?php echo $organ['id']; ?>]"   value="1"  <?php echo set_checkbox('organ_avail['.$organ['id'].']', '1',(!empty($form_data['organs_avail'][$organ['id']])) ? TRUE : FALSE);  ?>></td>
+                                    </tr>
+                        <?php } ?>
+                  </table>
+                </div>
+                <?php } ?>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>General Health Remark</label>
+                            <textarea type="checkbox" class="form-control" id="health_remark" name="health_remark" ><?php echo set_value('health_remark', $form_data['health_remark']); ?></textarea>
+                            <?php echo form_error('health_remark', '<label class ="error">', '</label>'); ?>
                         </div>
-                                   <div class="col-md-3"></div>
                     </div>
-        <?php } ?>
+                </div>
+                <button type="submit" class="btn btn-info btn-fill pull-right">Update</button>
+                <div class="clearfix"></div>
+                </form>
+            </div>
         </div>
     </div>
-    </div>
+</div>
+</div>

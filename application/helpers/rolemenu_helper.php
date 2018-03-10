@@ -21,6 +21,8 @@
             'Donar Registration' => ['class' => '', 'url' => 'home/donar_registration'],
             'Hospital Registration' => ['class' => '', 'url' => 'admin/hospital_registration'],
             'Patient Registration' => [ 'class' => '', 'url' => 'hospital/patient_registration'],
+            'Request Interface' => [ 'class' => '', 'url' => 'hospital/request_interface'],
+            'Donar Search' => [ 'class' => '', 'url' => 'hospital/request_interface'],
             'About Us' => [ 'class' => '', 'url' => 'home/about_us'],
             'Contact Us' => [ 'class' => '', 'url' => 'home/contact'],
         ];
@@ -28,13 +30,30 @@
             'Change Password' => ['class' => '', 'url' => 'admin/change_password'],
             'Logout' => ['class' => '', 'url' => 'home/logout'],
         ];
-        }elseif($user[role] == 'donar'){
+        }elseif($user['role'] == 'donar'){
          $response['menu'] = [
             'Home' => ['class' => '', 'url' => 'donar'],
-            'Donar Registration' => ['class' => '', 'url' => 'home/donar_registration'],
+            'Request View' => ['class' => '', 'url' => 'donar/request_view'],
+            'About Us' => [ 'class' => '', 'url' => 'home/about_us'],
+            'Contact Us' => [ 'class' => '', 'url' => 'home/contact'],
         ];
         $response['menutop'] = [
             'Change Password' => ['class' => '', 'url' => 'admin/change_password'],
+            'Account Deactivate' => ['class' => '', 'url' => 'home/account_deactivate'],
+            'Logout' => ['class' => '', 'url' => 'home/logout'],
+        ];
+        }elseif($user['role'] == 'hospital'){
+         $response['menu'] = [
+            'Home' => ['class' => '', 'url' => 'donar'],
+            'Patient Registration' => [ 'class' => '', 'url' => 'hospital/patient_registration'],
+            'Request Interface' => [ 'class' => '', 'url' => 'hospital/request_interface'],
+            'Donar Search' => [ 'class' => '', 'url' => 'hospital/request_interface'],
+            'About Us' => [ 'class' => '', 'url' => 'home/about_us'],
+            'Contact Us' => [ 'class' => '', 'url' => 'home/contact'],
+        ];
+        $response['menutop'] = [
+            'Change Password' => ['class' => '', 'url' => 'admin/change_password'],
+            'Account Deactivate' => ['class' => '', 'url' => 'home/account_deactivate'],
             'Logout' => ['class' => '', 'url' => 'home/logout'],
         ];
         }
