@@ -19,6 +19,9 @@
         <link rel="stylesheet" href="<?php echo base_url(); ?>CSS/jquery.datetimepicker.css"/>
         <link rel="stylesheet" href="<?php echo base_url(); ?>CSS/jquery-ui.css"/>
         <link rel="stylesheet" href="<?php echo base_url(); ?>CSS/jquery-confirm.min.css"/>
+        <script>
+        var base_url = "<?php echo base_url(); ?>";
+        </script>
         <script src="<?php echo base_url(); ?>JS/jquery.min.js"></script>
         <script src="<?php echo base_url(); ?>JS/jquery-ui.js"></script>
         <script src="<?php echo base_url(); ?>JS/jquery.datetimepicker.full.min.js"></script>

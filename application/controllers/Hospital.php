@@ -208,4 +208,37 @@ class Hospital extends CI_Controller {
         redirect('hospital/patient_registration');
     }
 
+///////////////// Request Management ///////////////////////////////////
+    public function request_interface($id = '0') {
+        $foot = [
+            'js_files' => ['JS/form/request_interface.js'],
+        ];
+        $data['form_data']['id'] = $id;
+        $fields = array(
+            'table1' => 'hosital_patient p',
+            'table2' => 'patient_request r',
+            'table3' => 'organs o',
+            'condition2' => 'r.patient_id = p.id',
+            'condition3' => 'r.organ_id = o.id',
+            'join2' => 'inner',
+            'join3' => 'inner',
+            'select' => 'p.patient_name,o.*',
+            'where' => ['r.status' => '1'],
+            'where_in' => [], 'like' => [], 'group_by' => '',
+            'order_by' => '', 'limit' => array());
+
+        $data['patients'] = $this->common->table_details_join_three($fields)->result_array();
+
+        $this->load->view('header_site.php', ['menu' => $this->menu, 'top_menu' => $this->menutop]);
+        $this->load->view('request_interface.php', $data);
+        $this->load->view('footer.php', $foot);
+    }
+
+    public function ajax_request() {
+        $response = [];
+        $request_id = $this->input->post('request_id');
+        
+        echo json_encode($response);
+    }
+
 }
