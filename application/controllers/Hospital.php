@@ -176,6 +176,7 @@ class Hospital extends CI_Controller {
                     /////////////////////////
                     $aviltemp = (isset($organ_status[$organ_id])) ? $organ_status[$organ_id] : '0';
                     $organ_details = array(
+                        'patient_id' => $id,
                         'organ_id' => $organ_id,
                         'status' => $aviltemp,
                     );
@@ -222,7 +223,7 @@ class Hospital extends CI_Controller {
             'condition3' => 'r.organ_id = o.id',
             'join2' => 'inner',
             'join3' => 'inner',
-            'select' => 'p.patient_name,o.*',
+            'select' => 'p.patient_name,r.*,o.organ',
             'where' => ['r.status' => '1'],
             'where_in' => [], 'like' => [], 'group_by' => '',
             'order_by' => '', 'limit' => array());
@@ -235,9 +236,13 @@ class Hospital extends CI_Controller {
     }
 
     public function ajax_request() {
+        $this->load->model('sort');
         $response = [];
         $request_id = $this->input->post('request_id');
-        
+        $organ_id = $this->input->post('organ_id');
+        $response['notadded'] = $this->sort->getnotadded($organ_id)->result_array();
+        $response['added'] = $this->sort->getadded($request_id)->result_array();
+        echo $this->db->last_query();
         echo json_encode($response);
     }
 

@@ -75,10 +75,10 @@
                             <span class="navbar-toggler-bar burger-lines"></span>
                         </button>
                         <?php 
-                        if(!empty($menutop)){ ?>
+                        if(!empty($top_menu)){ ?>
                         <div class="collapse navbar-collapse justify-content-end" id="navigation">
                         <ul class="navbar-nav ml-auto">
-                            <?php foreach ($menutop as $title => $url) {         ?>
+                            <?php foreach ($top_menu as $title => $url) {         ?>
                             <li class="nav-item">
                                 <a class="nav-link" href="<?php echo base_url($url); ?>">
                                     <span class="no-icon"><?php echo $title; ?></span>

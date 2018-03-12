@@ -60,7 +60,7 @@ class Donar extends CI_Controller {
                 $data['form_method'] = 'update';
             }    
             
-        $this->load->view('header_site.php', ['menu' => $this->menu, 'menutop' => $this->menutop]);
+        $this->load->view('header_site.php', ['menu' => $this->menu, 'top_menu' => $this->menutop]);
         $this->load->view('profile_donar.php',$data);
         $this->load->view('footer.php');
     }

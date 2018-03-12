@@ -1,6 +1,7 @@
 <?php
 $page_title = 'Request Interface';
-$action_page = 'hospital/request_process';
+$action_page_add = 'hospital/request_process_add';
+$action_page_update = 'hospital/request_process_update';
 ?>
 
 <!-- End Navbar -->
@@ -35,7 +36,7 @@ $action_page = 'hospital/request_process';
                                         <select id="request_id" name="request_id" class="form-control">
                                             <option value="">Select</option>
                                             <?php foreach ($patients as  $temp) { ?>
-                                                <option  <?php echo set_select('patient_id', $temp['id'],($form_data['id']==$temp['id'])?TRUE:FALSE); ?> value="<?php echo $temp['id']; ?>"><?php echo $temp['patient_name'].' - '.$temp['organ']; ?></option>
+                                                <option  <?php echo set_select('patient_id', $temp['id'],($form_data['id']==$temp['id'])?TRUE:FALSE); ?> value="<?php echo $temp['id'].'-'.$temp['organ_id']; ?>"><?php echo $temp['patient_name'].' - '.$temp['organ']; ?></option>
                                             <?php } ?>
                                         </select>
                                     </div>
@@ -43,17 +44,20 @@ $action_page = 'hospital/request_process';
                                 </div>
                             </div>
                         <div id="requesteddonararea" style=" display: none">
-                            <form id="hospital_registration" method="post" action="<?php echo base_url($action_page); ?>">
-                                <input type="hidden" class="form-control"  name="id" value="">
+                            <form id="hospital_registration" method="post" action="<?php echo base_url($action_page_update); ?>">
                                 <input type="hidden" class="form-control"  name="method" value="update">
+                                <div id="form-requesteddonar">
+                                </div>
                                 <button type="submit" class="btn btn-info btn-fill pull-right">Update</button>
                                 <div class="clearfix"></div>
                             </form>
                         </div>
                         <div id="restdonararea" style=" display: none">
-                            <form id="hospital_registration" method="post" action="<?php echo base_url($action_page); ?>">
+                            <form id="hospital_registration" method="post" action="<?php echo base_url($action_page_add); ?>">
                                 <input type="hidden" class="form-control"  name="id" value="">
                                 <input type="hidden" class="form-control"  name="method" value="insert">
+                                <div id="form-restdonar">
+                                </div>
                                 <button type="submit" class="btn btn-info btn-fill pull-right">Submit</button>
                                 <div class="clearfix"></div>
                             </form>

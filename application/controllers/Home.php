@@ -17,13 +17,13 @@ class Home extends CI_Controller {
     }
 
     public function index() {
-        $this->load->view('header_site.php', ['menu' => $this->menu,'menutop'=>$this->menutop]);
+        $this->load->view('header_site.php', ['menu' => $this->menu,'top_menu'=>$this->menutop]);
         $this->load->view('login.php');
         $this->load->view('footer.php');
     }
 
     public function about_us() {
-        $this->load->view('header_site.php', ['menu' => $this->menu,'menutop'=>$this->menutop]);
+        $this->load->view('header_site.php', ['menu' => $this->menu,'top_menu'=>$this->menutop]);
         $this->load->view('aboutus.php');
         $this->load->view('footer.php');
     }
@@ -33,7 +33,7 @@ class Home extends CI_Controller {
      */
 
     public function login() {
-        $this->load->view('header_site.php', ['menu' => $this->menu,'menutop'=>$this->menutop]);
+        $this->load->view('header_site.php', ['menu' => $this->menu,'top_menu'=>$this->menutop]);
         $this->load->view('login.php');
         $this->load->view('footer.php');
     }
@@ -145,7 +145,7 @@ class Home extends CI_Controller {
             }
         }
 
-        $this->load->view('header_site.php', ['menu' => $this->menu,'menutop'=>$this->menutop]);
+        $this->load->view('header_site.php', ['menu' => $this->menu,'top_menu'=>$this->menutop]);
         $this->load->view('donar_registration.php', $data);
         $this->load->view('footer.php', $foot);
     }
@@ -288,7 +288,7 @@ rahul;
      */
 
     public function forget_password() {
-        $this->load->view('header_site.php', ['menu' => $this->menu,'menutop'=>$this->menutop]);
+        $this->load->view('header_site.php', ['menu' => $this->menu,'top_menu'=>$this->menutop]);
         $this->load->view('forget_password.php');
         $this->load->view('footer.php');
     }
@@ -343,7 +343,7 @@ rahul;
 
 /////////////////////////////////////////////////////////////
     public function contact() {
-        $this->load->view('header_site.php', ['menu' => $this->menu,'menutop'=>$this->menutop]);
+        $this->load->view('header_site.php', ['menu' => $this->menu,'top_menu'=>$this->menutop]);
         $this->load->view('contact.php');
         $this->load->view('footer.php');
     }

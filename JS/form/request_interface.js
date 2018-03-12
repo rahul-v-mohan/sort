@@ -5,8 +5,11 @@ jQuery(document).ready(function ($) {
          $('#requesteddonararea').attr('display','none');
          $('#restdonararea').attr('display','none');
         request_id =  $('#request_id').val();
-        if (patient_id != '') {
-            var data = {request_id: request_id};
+        if (request_id != '') {
+            request_id =request_id.split("-");
+            organ_id =request_id[1];
+            request_id =request_id[0];
+            var data = {request_id: request_id,organ_id:organ_id};
             getrequest(base_url, data, 'hospital/ajax_request');
 
         }
