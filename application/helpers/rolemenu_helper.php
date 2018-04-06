@@ -10,7 +10,7 @@
             'Home' => [ 'class' => 'nc-atom', 'url' => ''],
             'About Us' => [ 'class' => 'nc-attach-87', 'url' => 'home/about_us'],
             'Login' => [ 'class' => 'nc-lock-circle-open', 'url' => 'home/login'],
-            'Donar Registration' => [ 'class' => 'nc-paper-2', 'url' => 'home/donar_registration'],
+            'Donor Registration' => [ 'class' => 'nc-paper-2', 'url' => 'home/donar_registration'],
             'Contact Us' => [ 'class' => 'nc-pin-3', 'url' => 'home/contact'],
         ];
                 $response['menutop']=[];
@@ -18,11 +18,11 @@
         if($user['role'] == 'admin'){
          $response['menu'] = [
             'Home' => ['class' => '', 'url' => 'admin'],
-            'Donar Registration' => ['class' => '', 'url' => 'home/donar_registration'],
+            'Donor Registration' => ['class' => '', 'url' => 'home/donar_registration'],
             'Hospital Registration' => ['class' => '', 'url' => 'admin/hospital_registration'],
             'Patient Registration' => [ 'class' => '', 'url' => 'hospital/patient_registration'],
             'Request Interface' => [ 'class' => '', 'url' => 'hospital/request_interface'],
-            'Donar Search' => [ 'class' => '', 'url' => 'hospital/request_interface'],
+            'Donor Search' => [ 'class' => '', 'url' => 'hospital/request_interface'],
             'About Us' => [ 'class' => '', 'url' => 'home/about_us'],
             'Contact Us' => [ 'class' => '', 'url' => 'home/contact'],
         ];
@@ -47,7 +47,7 @@
             'Home' => ['class' => '', 'url' => 'donar'],
             'Patient Registration' => [ 'class' => '', 'url' => 'hospital/patient_registration'],
             'Request Interface' => [ 'class' => '', 'url' => 'hospital/request_interface'],
-            'Donar Search' => [ 'class' => '', 'url' => 'hospital/request_interface'],
+            'Donor Search' => [ 'class' => '', 'url' => 'hospital/request_interface'],
             'About Us' => [ 'class' => '', 'url' => 'home/about_us'],
             'Contact Us' => [ 'class' => '', 'url' => 'home/contact'],
         ];

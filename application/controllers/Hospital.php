@@ -242,7 +242,7 @@ class Hospital extends CI_Controller {
         $organ_id = $this->input->post('organ_id');
         $response['notadded'] = $this->sort->getnotadded($organ_id)->result_array();
         $response['added'] = $this->sort->getadded($request_id)->result_array();
-        echo $this->db->last_query();
+//        echo $this->db->last_query();
         echo json_encode($response);
     }
 

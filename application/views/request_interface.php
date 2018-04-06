@@ -43,16 +43,9 @@ $action_page_update = 'hospital/request_process_update';
                                     <button type="button" id="patient_search_id" class="btn btn-default btn-fill pull-right">Search</button>
                                 </div>
                             </div>
-                        <div id="requesteddonararea" style=" display: none">
-                            <form id="hospital_registration" method="post" action="<?php echo base_url($action_page_update); ?>">
-                                <input type="hidden" class="form-control"  name="method" value="update">
-                                <div id="form-requesteddonar">
-                                </div>
-                                <button type="submit" class="btn btn-info btn-fill pull-right">Update</button>
-                                <div class="clearfix"></div>
-                            </form>
-                        </div>
+
                         <div id="restdonararea" style=" display: none">
+                            <label><h3>Not Requested Donor</h3></label>
                             <form id="hospital_registration" method="post" action="<?php echo base_url($action_page_add); ?>">
                                 <input type="hidden" class="form-control"  name="id" value="">
                                 <input type="hidden" class="form-control"  name="method" value="insert">
@@ -60,6 +53,12 @@ $action_page_update = 'hospital/request_process_update';
                                 </div>
                                 <button type="submit" class="btn btn-info btn-fill pull-right">Submit</button>
                                 <div class="clearfix"></div>
+                            </form>
+                        </div>
+                        <div id="requesteddonararea" style=" display: none">
+                            <label><h3> Requested Donor</h3></label>
+                                <div id="form-requesteddonar">
+                                </div>
                             </form>
                         </div>
                     </div>
