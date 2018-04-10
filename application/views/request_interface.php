@@ -1,7 +1,6 @@
 <?php
 $page_title = 'Request Interface';
 $action_page_add = 'hospital/request_process_add';
-$action_page_update = 'hospital/request_process_update';
 ?>
 
 <!-- End Navbar -->
@@ -67,3 +66,4 @@ $action_page_update = 'hospital/request_process_update';
         </div>
         <!--Table-->
     </div>
+    <script>var recipient = "<?php echo $form_data['id']; ?>"; </script>

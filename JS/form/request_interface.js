@@ -1,10 +1,11 @@
 jQuery(document).ready(function ($) {
     
-    
     $("#patient_search_id").click(function () {
-         $('#requesteddonararea').attr('display','none');
-         $('#restdonararea').attr('display','none');
+         $('#requesteddonararea').hide();
+         $('#restdonararea').hide();
         request_id =  $('#request_id').val();
+         $('#form-restdonar').empty();
+         $('#form-requesteddonar').empty();
         if (request_id != '') {
             request_id =request_id.split("-");
             organ_id =request_id[1];
