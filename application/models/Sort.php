@@ -19,7 +19,7 @@ Class Sort extends CI_Model {
         $this->db->select(" UR.*");
         $this->db->from("patient_request PR ");
         $this->db->join('requested_donar RD', 'RD.request_id = PR.id ','inner');
-        $this->db->join('personal_details UR', 'UR.user_id = RD.user_id ','inner');
+        $this->db->join('personal_details UR', 'UR.user_id = RD.donar_id ','inner');
         $this->db->where(['PR.id' => $pid]);
         return $this->db->get();
     }

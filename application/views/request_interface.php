@@ -32,7 +32,7 @@ $action_page_add = 'hospital/request_process_add';
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label> Patient <span class="mandatory">*</span></label>
-                                        <select id="request_id" name="request_id" class="form-control">
+                                        <select id="request_id" name="" class="form-control">
                                             <option value="">Select</option>
                                             <?php foreach ($patients as  $temp) { ?>
                                                 <option  <?php echo set_select('patient_id', $temp['id'],($form_data['id']==$temp['id'])?TRUE:FALSE); ?> value="<?php echo $temp['id'].'-'.$temp['organ_id']; ?>"><?php echo $temp['patient_name'].' - '.$temp['organ']; ?></option>
@@ -46,8 +46,7 @@ $action_page_add = 'hospital/request_process_add';
                         <div id="restdonararea" style=" display: none">
                             <label><h3>Not Requested Donor</h3></label>
                             <form id="hospital_registration" method="post" action="<?php echo base_url($action_page_add); ?>">
-                                <input type="hidden" class="form-control"  name="id" value="">
-                                <input type="hidden" class="form-control"  name="method" value="insert">
+                                <input type="hidden" class="form-control"  name="patient_request_id"  id="patient_request_id" value="<?php echo $temp['id'].'-'.$temp['organ_id']; ?>">
                                 <div id="form-restdonar">
                                 </div>
                                 <button type="submit" class="btn btn-info btn-fill pull-right">Submit</button>

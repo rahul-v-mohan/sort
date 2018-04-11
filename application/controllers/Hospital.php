@@ -210,7 +210,7 @@ class Hospital extends CI_Controller {
     }
 
 ///////////////// Request Management ///////////////////////////////////
-    public function request_interface($id = '0') {
+    public function request_interface($id = 0) {
         $foot = [
             'js_files' => ['JS/form/request_interface.js'],
         ];
@@ -245,89 +245,31 @@ class Hospital extends CI_Controller {
 //        echo $this->db->last_query();
         echo json_encode($response);
     }
-  public function request_process_add() {
-        $id = $this->input->post('id');
 
+    public function request_process_add() {
 
-        $this->form_validation->set_rules('patient_name', 'Patient Name', 'required');
-        $this->form_validation->set_rules('patient_id', 'Patient ID', 'required');
-        $this->form_validation->set_rules('hospital_id', 'Hospital id', 'required');
-        $this->form_validation->set_rules('mobile', 'Mobile', 'required|exact_length[10]|integer');
+        $patient_request_id = $this->input->post('patient_request_id');
+        $patient_request_id = explode("-", $patient_request_id);
+        $patient_request_id = $patient_request_id[0];
 
-        if ($this->form_validation->run() == FALSE) {
-            $this->patient_registration($id);
-            return;
-        } else {
+        $donar_request = $this->input->post('donar_request');
+        $requested_date = $this->input->post('requested_date');
+//        var_dump($requested_date); die();
 
+        foreach ($donar_request as $donar =>$exist) {
 
             $data = array(
-                'patient_id' => $this->input->post('patient_id'),
-                'patient_name' => $this->input->post('patient_name'),
-                'mobile' => $this->input->post('mobile'),
-                'gender' => $this->input->post('gender'),
-                'dob' => $this->input->post('dob'),
-                'health_conditon' => $this->input->post('health_conditon'),
-                'hospital_id' => $this->input->post('hospital_id'),
+                'request_id' => $patient_request_id,
+                'donar_id' => $donar,
+                'requested_date' => $requested_date[$donar],
+                'status' => 0,
             );
-            $organs = $this->input->post('organ');
-            $organ_status = $this->input->post('organ_status');
-
-
-            if ($this->input->post('method') == 'insert') {
-                $insert_id = $this->common->save_table_details('hosital_patient', $data);
-                //Organ Management
-                foreach ($organs as $organ_id => $val) {
-                    $aviltemp = (!empty($organ_status[$organ_id])) ? $organ_status[$organ_id] : '0';
-                    $organ_details = array(
-                        'patient_id' => $insert_id,
-                        'organ_id' => $organ_id,
-                        'status' => $aviltemp,
-                    );
-                    $this->common->save_table_details('patient_request', $organ_details);
-                }
-                ////////////////////////////////
-
-                $msg = (empty($insert_id)) ? 'Not able to insert try again' : 'Successfully Inserted';
-                $this->session->set_flashdata('msg', $msg);
-            } else if ($this->input->post('method') == 'update') {
-                $where = ['id' => $id];
-                $response = $this->common->update_table_details('hosital_patient', $data, ['id' => $id]);
-                // Organ      
-                $fields = [
-                    'table' => 'patient_request', 'select' => '*',
-                    'where' => ['patient_id' => $id], 'where_in' => [], 'like' => [],
-                    'group_by' => '', 'order_by' => '', 'limit' => [],];
-
-                $all_donororgan = $this->common->table_details($fields)->result_array();
-                $all_donororgan = (!empty($all_donororgan)) ? array_column($all_donororgan, "id", "organ_id") : [];
-
-                foreach ($organs as $organ_id => $val) {
-
-                    /////////////////////////
-                    $aviltemp = (isset($organ_status[$organ_id])) ? $organ_status[$organ_id] : '0';
-                    $organ_details = array(
-                        'patient_id' => $id,
-                        'organ_id' => $organ_id,
-                        'status' => $aviltemp,
-                    );
-                    if (array_key_exists($organ_id, $all_donororgan)) {
-                        $this->common->update_table_details('patient_request', $organ_details, ['id' => $all_donororgan[$organ_id]]);
-                        unset($all_donororgan[$organ_id]);
-                    } else {
-                        $this->common->save_table_details('patient_request', $organ_details);
-                    }
-                }
-                if (!empty($all_donororgan)) {
-                    foreach ($all_donororgan as $organ_id) {
-                        $where = ['id' => $organ_id];
-                        $this->common->delete_table_details('patient_request', $where);
-                    }
-                }
-                /////////////////////
-                $msg = (empty($response)) ? 'Not able to update try again' : 'Successfully Updated';
-                $this->session->set_flashdata('msg', $msg);
-            }
+            $insert_id = $this->common->save_table_details('requested_donar', $data);
         }
-        redirect('hospital/request_interface/');
+        $msg = (empty($insert_id)) ? 'Not able to insert try again' : 'Successfully Inserted';
+        $this->session->set_flashdata('msg', $msg);
+
+        redirect('hospital/request_interface/'.$patient_request_id);
     }
+
 }

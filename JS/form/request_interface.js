@@ -1,5 +1,12 @@
 jQuery(document).ready(function ($) {
-    
+    request_id = $("#request_id").val();
+    if(request_id != "" && request_id > 0){
+                  request_id =request_id.split("-");
+            organ_id =request_id[1];
+            request_id =request_id[0];
+            var data = {request_id: request_id,organ_id:organ_id};
+            getrequest(base_url, data, 'hospital/ajax_request');  
+    }
     $("#patient_search_id").click(function () {
          $('#requesteddonararea').hide();
          $('#restdonararea').hide();
@@ -15,6 +22,9 @@ jQuery(document).ready(function ($) {
 
         }
     });
+     $("#request_id").change(function () {
+         $("#patient_request_id").val(this.value);
+     });
         $('.datepick').datepicker({
             dateFormat: 'yy-mm-dd',
             minDate:0,
@@ -52,7 +62,7 @@ function getrequest(base_url, data, url) {
                     html += '<td>' + value['gender'] + '</td>';
                     html += '<td>' + value['location'] + '</td>';
                     html += '<td>' + value['blood_group'] + '</td>';
-                    html += '<td><input type="checkbox" name ="donar_request['+value['id']+']" /></td>';
+                    html += '<td><input type="checkbox" value="1" name ="donar_request['+value['id']+']" /></td>';
                     html += '<td><input type="text" class="form-control datepick" name ="requested_date['+value['id']+']" /></td>';
                     html += '</tr>';
                     slno++;
