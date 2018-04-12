@@ -16,7 +16,7 @@ Class Sort extends CI_Model {
     }
     public function getadded($pid) {
 
-        $this->db->select(" UR.*");
+        $this->db->select(" UR.*, RD.status ,RD.id as requesteddonar_id");
         $this->db->from("patient_request PR ");
         $this->db->join('requested_donar RD', 'RD.request_id = PR.id ','inner');
         $this->db->join('personal_details UR', 'UR.user_id = RD.donar_id ','inner');

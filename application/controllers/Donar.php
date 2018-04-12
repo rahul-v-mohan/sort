@@ -149,4 +149,14 @@ class Donar extends CI_Controller {
         }
         redirect('donar/index');
     }
+    public function request_view() {
+
+        $userdata = $this->session->userdata('USER'); 
+        $id = $userdata['id']; 
+   
+            
+        $this->load->view('header_site.php', ['menu' => $this->menu, 'top_menu' => $this->menutop]);
+        $this->load->view('request_view.php',$data);
+        $this->load->view('footer.php');
+    }
 }

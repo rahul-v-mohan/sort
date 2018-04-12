@@ -271,5 +271,23 @@ class Hospital extends CI_Controller {
 
         redirect('hospital/request_interface/'.$patient_request_id);
     }
+    public function request_process_update() {
+
+        $status = $this->input->post('status');
+
+//        var_dump($requested_date); die();
+
+        foreach ($status as $id =>$value) {
+            
+            $data = array(
+                'status' => $value,
+            );
+            $updated = $this->common->update_table_details('requested_donar', $data, ['id' => $id]);
+        }
+        $msg = (empty($updated)) ? 'Not able to Update try again' : 'Successfully Updated';
+        $this->session->set_flashdata('msg', $msg);
+
+        redirect('hospital/request_interface/'.$patient_request_id);
+    }
 
 }

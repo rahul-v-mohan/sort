@@ -92,7 +92,7 @@ if(! isEmpty(response.added)) {
                 html += '<th>Status</th>';
                 html += '</thead>';
                 html += '<tbody>';
-                $.each(response.notadded, function (key, value) {
+                $.each(response.added, function (key, value) {
                     html += '<tr>';
                     html += '<td>' + slno + '</td>';
                     html += '<td>' + value['name'] + '</td>';
@@ -100,7 +100,15 @@ if(! isEmpty(response.added)) {
                     html += '<td>' + value['mobile'] + '</td>';
                     html += '<td>' + value['location'] + '</td>';
                     html += '<td>' + value['blood_group'] + '</td>';
-                    html += '<td>' + value['status'] + '</td>';
+                   
+                    html += '<td><select class="form-control" name="status['+value['requesteddonar_id']+']">'; 
+                     status = (value['status']=='0')? 'Selected':'';
+                    html +=  '<option value ="0"  '+status+'> Requested</option>';
+                     status = (value['status']=='1')? 'Selected':'';
+                    html +=  '<option value ="1"  '+status+'>Organ Matching</option>';
+                     status = (value['status']=='2')? 'Selected':'';
+                    html +=  '<option value ="2"  '+status+'>Rejected</option>';
+                    html +=  '</select></td>';
                     html += '</tr>';
                     slno++;
                 });

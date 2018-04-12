@@ -1,6 +1,7 @@
 <?php
 $page_title = 'Request Interface';
 $action_page_add = 'hospital/request_process_add';
+$action_page_update = 'hospital/request_process_update';
 ?>
 
 <!-- End Navbar -->
@@ -55,8 +56,11 @@ $action_page_add = 'hospital/request_process_add';
                         </div>
                         <div id="requesteddonararea" style=" display: none">
                             <label><h3> Requested Donor</h3></label>
+                            <form id="" method="post" action="<?php echo base_url($action_page_update); ?>">
+                                <input type="hidden" class="form-control"  name="patient_request_id"  id="patient_request_id" value="<?php echo $temp['id'].'-'.$temp['organ_id']; ?>">
                                 <div id="form-requesteddonar">
                                 </div>
+                               <button type="submit" class="btn btn-info btn-fill pull-right">Update</button> 
                             </form>
                         </div>
                     </div>

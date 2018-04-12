@@ -22,7 +22,6 @@
             'Hospital Registration' => ['class' => '', 'url' => 'admin/hospital_registration'],
             'Patient Registration' => [ 'class' => '', 'url' => 'hospital/patient_registration'],
             'Request Interface' => [ 'class' => '', 'url' => 'hospital/request_interface'],
-            'Donor Search' => [ 'class' => '', 'url' => 'hospital/request_interface'],
             'About Us' => [ 'class' => '', 'url' => 'home/about_us'],
             'Contact Us' => [ 'class' => '', 'url' => 'home/contact'],
         ];
@@ -47,7 +46,6 @@
             'Home' => ['class' => '', 'url' => 'donar'],
             'Patient Registration' => [ 'class' => '', 'url' => 'hospital/patient_registration'],
             'Request Interface' => [ 'class' => '', 'url' => 'hospital/request_interface'],
-            'Donor Search' => [ 'class' => '', 'url' => 'hospital/request_interface'],
             'About Us' => [ 'class' => '', 'url' => 'home/about_us'],
             'Contact Us' => [ 'class' => '', 'url' => 'home/contact'],
         ];
