@@ -148,7 +148,7 @@ $page_url ='admin/hospital_registration';
                                                 <td><?php echo $row['mobile']; ?></td>
                                                 <td><?php echo $row['email']; ?></td>
                                                 <td><?php echo $row['email_hospital']; ?></td>
-                                                <td><?php echo $row['status']; ?></td>
+                                                <td><?php echo ($row['status']=='1')?"Active":"In Active"; ?></td>
                                                 <td><a href="<?php echo base_url($page_url.'/'.$row['id']);?>"><button type="button" class="btn">Edit</button></a></td>
                                                 <td>
                                                     <form method="post" action="<?php echo base_url('admin/hospital_delete');?>">

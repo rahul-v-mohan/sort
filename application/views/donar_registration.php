@@ -1,6 +1,6 @@
 <?php
-$page_title = 'Donar Registration';
-$table_name = 'Donar Details';
+$page_title = 'Donor Registration';
+$table_name = 'Donor Details';
 $page_url = 'home/donar_registration';
 
 $bloodgrouplist = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
@@ -61,7 +61,7 @@ $bloodgrouplist = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Date Of Birth <span class="mandatory">*</span></label>
-                                        <input type="text" class="form-control" id="dob" name="dob"  placeholder="DOB" value="<?php echo set_value('dob', $form_data['dob']); ?>">
+                                        <input type="text" class="form-control" id="dob" name="dob"  placeholder="DOB"  autocomplete="off" value="<?php echo set_value('dob', $form_data['dob']); ?>">
                                         <?php echo form_error('dob', '<label class ="error">', '</label>'); ?>
                                     </div>
                                 </div>
@@ -198,7 +198,7 @@ $bloodgrouplist = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
                         <th>Mobile</th>
                         <th>Email</th>
                         <th>Gender</th>
-                        <th>Status</th>
+                        <th>Account Status</th>
                         <th>Edit</th>
                         <th>Delete</th>
                         </thead>
@@ -215,7 +215,7 @@ $bloodgrouplist = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'];
                                         <td><?php echo $row['mobile']; ?></td>
                                         <td><?php echo $row['email']; ?></td>
                                         <td><?php echo $row['gender']; ?></td>
-                                        <td><?php echo $row['status']; ?></td>
+                                        <td><?php echo ($row['status']=='1')?"Active":"In Active"; ?></td>
                                         <td><a href="<?php echo base_url($page_url . '/' . $row['id']); ?>"><button type="button" class="btn">Edit</button></a></td>
                                         <td>
                                             <form method="post" action="<?php echo base_url('home/donar_delete'); ?>">

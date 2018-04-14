@@ -3,16 +3,15 @@
 Class Sort extends CI_Model {
 
  
-    public function getnotadded($oid) {
+    public function getnotadded($pid,$oid) {
 
-        $this->db->select(" UR.*");
-        $this->db->from("patient_request PR ");
-        $this->db->join('donar_organs D', 'PR.organ_id  = D.organ_id ','inner');
-        $this->db->join('personal_details UR', 'UR.user_id = D.user_id ','inner');
-        $this->db->join('requested_donar RD', 'RD.request_id = PR.id ','left');
-        $this->db->where('D.status = "1" AND PR.organ_id = "'.$oid.'" AND RD.id IS null', NULL, FALSE);
-        $this->db->group_by('D.user_id'); 
-        return $this->db->get();
+         $query ="SELECT * FROM donar_organs D 
+                INNER JOIN personal_details PD on PD.user_id = D.user_id
+                LEFT JOIN 
+                (SELECT * FROM requested_donar WHERE request_id = '$pid' ) RD ON RD.donar_id = D.user_id
+                WHERE D.status = '1' AND  D.organ_id='$oid' AND RD.id IS NULL
+                GROUP BY D.user_id";
+        return $this->db->query($query);
     }
     public function getadded($pid) {
 

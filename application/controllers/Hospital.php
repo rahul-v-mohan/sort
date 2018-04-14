@@ -205,7 +205,7 @@ class Hospital extends CI_Controller {
 
         $id = $this->input->post('id');
         $where = ['id' => $id];
-        $this->common->delete_table_details('user', $where);
+        $this->common->delete_table_details('hosital_patient', $where);
         redirect('hospital/patient_registration');
     }
 
@@ -240,7 +240,7 @@ class Hospital extends CI_Controller {
         $response = [];
         $request_id = $this->input->post('request_id');
         $organ_id = $this->input->post('organ_id');
-        $response['notadded'] = $this->sort->getnotadded($organ_id)->result_array();
+        $response['notadded'] = $this->sort->getnotadded($request_id,$organ_id)->result_array();
         $response['added'] = $this->sort->getadded($request_id)->result_array();
 //        echo $this->db->last_query();
         echo json_encode($response);
@@ -275,8 +275,6 @@ class Hospital extends CI_Controller {
 
         $status = $this->input->post('status');
 
-//        var_dump($requested_date); die();
-
         foreach ($status as $id =>$value) {
             
             $data = array(
@@ -287,7 +285,6 @@ class Hospital extends CI_Controller {
         $msg = (empty($updated)) ? 'Not able to Update try again' : 'Successfully Updated';
         $this->session->set_flashdata('msg', $msg);
 
-        redirect('hospital/request_interface/'.$patient_request_id);
+        redirect('hospital/request_interface/');
     }
-
 }

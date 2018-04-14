@@ -86,7 +86,17 @@ class Admin extends CI_Controller {
         $id = $this->input->post('id');
 
 
-        $this->form_validation->set_rules('email', 'Username', 'required|valid_email');
+        if ($this->input->post('method') == 'insert') {
+            $this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[user.email]');
+        } else {
+            $original_value = $this->db->query("SELECT email FROM user WHERE id = " . $id)->row()->email;
+            if ($this->input->post('email') != $original_value) {
+                $is_unique = '|is_unique[user.email]';
+            } else {
+                $is_unique = '';
+            }
+            $this->form_validation->set_rules('email', 'Email', 'required|valid_email' . $is_unique);
+        }
         $this->form_validation->set_rules('hospital_name', 'Hospital Name', 'required');
         $this->form_validation->set_rules('location', 'Location', 'required');
         $this->form_validation->set_rules('district', 'District', 'required');

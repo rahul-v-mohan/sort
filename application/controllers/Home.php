@@ -17,13 +17,13 @@ class Home extends CI_Controller {
     }
 
     public function index() {
-        $this->load->view('header_site.php', ['menu' => $this->menu,'top_menu'=>$this->menutop]);
+        $this->load->view('header_site.php', ['menu' => $this->menu, 'top_menu' => $this->menutop]);
         $this->load->view('login.php');
         $this->load->view('footer.php');
     }
 
     public function about_us() {
-        $this->load->view('header_site.php', ['menu' => $this->menu,'top_menu'=>$this->menutop]);
+        $this->load->view('header_site.php', ['menu' => $this->menu, 'top_menu' => $this->menutop]);
         $this->load->view('aboutus.php');
         $this->load->view('footer.php');
     }
@@ -33,7 +33,7 @@ class Home extends CI_Controller {
      */
 
     public function login() {
-        $this->load->view('header_site.php', ['menu' => $this->menu,'top_menu'=>$this->menutop]);
+        $this->load->view('header_site.php', ['menu' => $this->menu, 'top_menu' => $this->menutop]);
         $this->load->view('login.php');
         $this->load->view('footer.php');
     }
@@ -42,7 +42,6 @@ class Home extends CI_Controller {
         $data = array(
             'email' => $this->input->post('email'),
             'password' => $this->input->post('password'),
-            'status' => '1',
         );
         $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
         $this->form_validation->set_rules('password', 'Password', 'required');
@@ -62,6 +61,11 @@ class Home extends CI_Controller {
             $result = $this->common->table_details($fields);
             if ($result->num_rows() == 1) {
                 $data['USER'] = $result->row_array();
+                if ($data['USER']['status'] == 0) {
+                    $this->session->unset_userdata('USER');
+                    $this->session->set_flashdata('msg', 'Your Account has been deactivated contact admin for resume');
+                    redirect('home/login', 'refresh');
+                }
                 $this->session->set_userdata($data);
                 $this->session->set_userdata(['logged_in' => true]);
                 if ($data['USER']['role'] == 'admin') {
@@ -92,8 +96,8 @@ class Home extends CI_Controller {
         /////// View permission
         $user_data = $this->session->userdata('USER');
         $data['record_view'] = ($user_data['role'] == 'admin') ? 1 : 0;
-        if($data['record_view'] == 1){
-                        $fields = array(
+        if ($data['record_view'] == 1) {
+            $fields = array(
                 'table1' => 'user u',
                 'table2' => 'personal_details p',
                 'condition2' => 'u.id = p.user_id',
@@ -104,11 +108,11 @@ class Home extends CI_Controller {
         }
         ///////////////////////
         $data['form_data'] = [
-            'name' => '','dob' => '','email' => '',
-            'mobile' => '','gender' => '','status' => '1',
-            'house_name' => '','location' => '','district' => '',
-            'state' => '','height' => '','weight' => '',
-            'blood_group' => '','health_remark' => '','organs' => [],
+            'name' => '', 'dob' => '', 'email' => '',
+            'mobile' => '', 'gender' => '', 'status' => '1',
+            'house_name' => '', 'location' => '', 'district' => '',
+            'state' => '', 'height' => '', 'weight' => '',
+            'blood_group' => '', 'health_remark' => '', 'organs' => [],
             'organ_avail' => [],
             'user_id' => '0',
         ];
@@ -136,8 +140,8 @@ class Home extends CI_Controller {
                     'group_by' => '', 'order_by' => '', 'limit' => [],];
 
                 $temp = $this->common->table_details($fields)->result_array();
-               
-                $data['form_data']['organs'] = (!empty($temp)) ? array_column($temp,'organ_id') : [];
+
+                $data['form_data']['organs'] = (!empty($temp)) ? array_column($temp, 'organ_id') : [];
 //                print_r($data['form_data']['organs']);die();
                 $data['form_data']['organs_avail'] = (!empty($temp)) ? array_column($temp, 'status', 'organ_id') : [];
                 ///////////////////////
@@ -145,7 +149,7 @@ class Home extends CI_Controller {
             }
         }
 
-        $this->load->view('header_site.php', ['menu' => $this->menu,'top_menu'=>$this->menutop]);
+        $this->load->view('header_site.php', ['menu' => $this->menu, 'top_menu' => $this->menutop]);
         $this->load->view('donar_registration.php', $data);
         $this->load->view('footer.php', $foot);
     }
@@ -155,8 +159,17 @@ class Home extends CI_Controller {
         $this->load->helper('mailrahul');   // Extended helper created for mail sending purpose 
         $id = $this->input->post('id');
 
-
-        $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+        if ($this->input->post('method') == 'insert') {
+            $this->form_validation->set_rules('email', 'Email', 'required|valid_email|is_unique[user.email]');
+        } else {
+            $original_value = $this->db->query("SELECT email FROM user WHERE id = " . $id)->row()->email;
+            if ($this->input->post('email') != $original_value) {
+                $is_unique = '|is_unique[user.email]';
+            } else {
+                $is_unique = '';
+            }
+            $this->form_validation->set_rules('email', 'Email', 'required|valid_email' . $is_unique);
+        }
         $this->form_validation->set_rules('name', 'Name', 'required');
         $this->form_validation->set_rules('dob', 'Date Of Birth', 'required');
         $this->form_validation->set_rules('gender', 'Gender', 'required');
@@ -288,7 +301,7 @@ rahul;
      */
 
     public function forget_password() {
-        $this->load->view('header_site.php', ['menu' => $this->menu,'top_menu'=>$this->menutop]);
+        $this->load->view('header_site.php', ['menu' => $this->menu, 'top_menu' => $this->menutop]);
         $this->load->view('forget_password.php');
         $this->load->view('footer.php');
     }
@@ -343,10 +356,11 @@ rahul;
 
 /////////////////////////////////////////////////////////////
     public function contact() {
-        $this->load->view('header_site.php', ['menu' => $this->menu,'top_menu'=>$this->menutop]);
+        $this->load->view('header_site.php', ['menu' => $this->menu, 'top_menu' => $this->menutop]);
         $this->load->view('contact.php');
         $this->load->view('footer.php');
     }
+
     public function contact_process() {
         $this->load->helper('mailrahul');
         $data = array(
@@ -363,25 +377,26 @@ rahul;
             $this->contact();
             return;
         } else {
-                    $html = <<<rahul
+            $html = <<<rahul
                  <h4> Contact Mail </h4>         
                   Name: {$data['name']} </br>
                   Email: {$data['email']} </br>
                   Mobile: {$data['mobile']} </br>
                   Message: {$data['message']} </br>
 rahul;
-                    $responseuser=getemail("rahul.mohan@ipsrsolutions.com", 'Contact Mail', $html);
+            $responseuser = getemail("rahul.mohan@ipsrsolutions.com", 'Contact Mail', $html);
             $msg = (empty($responseuser)) ? 'Not Able to Send Mail!! Try Again' : 'Your enquiry is send successfully';
             $this->session->set_flashdata('msg', $msg);
             redirect('home/contact', 'refresh');
         }
     }
+
     public function account_deactivate() {
         $user_data = $this->session->userdata('USER');
-        if(!empty($user_data['id'])){
-                $responseuser = $this->common->update_table_details('user', ['status' =>0], ['id' => $user_data['id'] ]);
+        if (!empty($user_data['id'])) {
+            $responseuser = $this->common->update_table_details('user', ['status' => 0], ['id' => $user_data['id']]);
         }
-         $this->logout();
+        $this->logout();
     }
 
     public function logout() {

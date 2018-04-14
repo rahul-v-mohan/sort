@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 12, 2018 at 04:56 AM
+-- Generation Time: Apr 14, 2018 at 04:56 AM
 -- Server version: 5.6.24
 -- PHP Version: 5.6.8
 
@@ -31,16 +31,21 @@ CREATE TABLE IF NOT EXISTS `donar_organs` (
   `user_id` int(11) NOT NULL,
   `organ_id` int(11) NOT NULL,
   `status` tinyint(4) NOT NULL COMMENT 'avil/unavil/'
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `donar_organs`
 --
 
 INSERT INTO `donar_organs` (`id`, `user_id`, `organ_id`, `status`) VALUES
-(1, 8, 2, 0),
-(2, 9, 1, 1),
-(3, 9, 2, 1);
+(1, 17, 1, 1),
+(2, 17, 2, 1),
+(4, 17, 3, 0),
+(5, 17, 4, 0),
+(6, 19, 1, 0),
+(7, 19, 2, 1),
+(8, 19, 3, 1),
+(9, 19, 4, 1);
 
 -- --------------------------------------------------------
 
@@ -57,14 +62,15 @@ CREATE TABLE IF NOT EXISTS `hosital_patient` (
   `mobile` varchar(16) NOT NULL,
   `gender` varchar(20) NOT NULL,
   `health_conditon` varchar(250) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hosital_patient`
 --
 
 INSERT INTO `hosital_patient` (`id`, `hospital_id`, `patient_name`, `patient_id`, `dob`, `mobile`, `gender`, `health_conditon`) VALUES
-(1, 6, 'patient', 'patientid', '1991-12-23', '5555555555', 'Male', 'patienthealthcondition');
+(1, 20, 'Patient One hospital One ', '111111', '2018-04-04', '8765432345', 'Male', 'Health is totally weak'),
+(2, 21, 'Patient Two', '2222', '2018-04-09', '5434673652', 'Female', '');
 
 -- --------------------------------------------------------
 
@@ -89,7 +95,8 @@ CREATE TABLE IF NOT EXISTS `hospital` (
 --
 
 INSERT INTO `hospital` (`id`, `hospital_name`, `location`, `district`, `state`, `mobile`, `email_hospital`, `website_url`, `user_id`) VALUES
-(2, 'etr', 'fghfg', 'fghr', 'erty', '4564564564', 'hospital@xxx.com', '456fghfg', 6);
+(1, 'Hospital One', 'loctn hos one', 'dist hos one', 'state  hos one', '9876543212', 'hospitalone@xxxx.com', 'www.hospitalone.com', 20),
+(2, 'Hospital Two', 'loc hospital two', 'dist hospital two', 'stat hospital two', '9876543234', 'hospitaltwo@xxx.com', 'hospitaltwo.com', 21);
 
 -- --------------------------------------------------------
 
@@ -108,10 +115,10 @@ CREATE TABLE IF NOT EXISTS `organs` (
 --
 
 INSERT INTO `organs` (`id`, `organ`, `type`) VALUES
-(1, 'Heart', '1'),
-(2, 'Kidney', '0'),
-(3, 'Pancreas', '1'),
-(4, 'Liver', '0');
+(1, 'Kidney', ''),
+(2, 'Liver', ''),
+(3, 'Lungs', ''),
+(4, 'Pancreas', '');
 
 -- --------------------------------------------------------
 
@@ -125,14 +132,18 @@ CREATE TABLE IF NOT EXISTS `patient_request` (
   `organ_id` int(11) NOT NULL,
   `request` varchar(300) NOT NULL,
   `status` tinyint(4) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `patient_request`
 --
 
 INSERT INTO `patient_request` (`id`, `patient_id`, `organ_id`, `request`, `status`) VALUES
-(3, 1, 1, '', 1);
+(1, 1, 1, '', 1),
+(2, 1, 2, '', 1),
+(3, 2, 1, '', 1),
+(4, 2, 2, '', 1),
+(5, 2, 3, '', 1);
 
 -- --------------------------------------------------------
 
@@ -156,16 +167,15 @@ CREATE TABLE IF NOT EXISTS `personal_details` (
   `weight` decimal(6,2) NOT NULL,
   `blood_donatewilling` tinyint(11) DEFAULT NULL COMMENT 'willingness',
   `health_remark` varchar(250) NOT NULL COMMENT 'general remark'
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `personal_details`
 --
 
 INSERT INTO `personal_details` (`id`, `user_id`, `name`, `dob`, `mobile`, `gender`, `house_name`, `location`, `district`, `state`, `blood_group`, `height`, `weight`, `blood_donatewilling`, `health_remark`) VALUES
-(1, 7, 'Raul Donar', '2018-03-01', '3333333333', 'Male', 'hous', 'loc', 'dist', 'ker', 'A+', '170.00', '75.00', NULL, ''),
-(2, 8, 'Donar', '2018-03-27', '9876543210', 'Male', 'testhouse', 'testlocation', 'testdist', 'teststat', 'AB+', '175.00', '60.00', NULL, 'Good health condition'),
-(3, 9, 'Rahul V Mohan', '2018-04-03', '9744574436', 'Male', 'hou', 'loc', 'dist', 'stat', 'B+', '133.00', '44.00', NULL, '');
+(2, 17, 'Donar One', '2018-04-04', '9744574436', 'Male', 'House donar one ', 'Loctn  donar one ', 'Dist  donar one ', 'state  donar one ', 'A+', '180.00', '50.00', NULL, 'Good Health'),
+(4, 19, 'Donar Two', '2018-04-13', '9876543211', 'Female', 'hou donar two', 'loc donar two', 'dist donar two', 'stat donar two', 'A-', '178.00', '79.00', NULL, 'healthy');
 
 -- --------------------------------------------------------
 
@@ -181,14 +191,15 @@ CREATE TABLE IF NOT EXISTS `requested_donar` (
   `reply_date` date NOT NULL,
   `status` tinyint(4) NOT NULL,
   `donar_id` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `requested_donar`
 --
 
 INSERT INTO `requested_donar` (`id`, `request_id`, `reply`, `requested_date`, `reply_date`, `status`, `donar_id`) VALUES
-(2, 3, '', '2018-01-02', '0000-00-00', 1, 9);
+(3, 5, '', '2018-04-14', '0000-00-00', 0, 19),
+(4, 4, '', '2018-04-14', '0000-00-00', 0, 17);
 
 -- --------------------------------------------------------
 
@@ -202,19 +213,18 @@ CREATE TABLE IF NOT EXISTS `user` (
   `password` varchar(60) NOT NULL,
   `role` varchar(20) NOT NULL,
   `status` tinyint(4) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`id`, `email`, `password`, `role`, `status`) VALUES
-(2, 'admin@xxx.com', 'admin', 'admin', 1),
-(3, 'rahul@x.com', 'admin', 'donar', 0),
-(6, 'hospital@xxx.com', 'admin', 'hospital', 1),
-(7, 'donar@xxx.com', 'admin', 'donar', 1),
-(8, 'donartest@xxx.com', 'admin', 'donar', 1),
-(9, 'donar1@xxx.com', 'admin', 'donar', 1);
+(1, 'admin@xxx.com', 'admin', 'admin', 1),
+(17, 'rahul.mohan@ipsrsolutions.com', 'ZYREKZCB', 'donar', 1),
+(19, 'rahul.vmohan@gmail.com', 'BZVQSAKR', 'donar', 1),
+(20, 'adminhospitalone@xxx.com', 'QICSZEUR', 'hospital', 1),
+(21, 'adminhospitaltwo@xxx.com', 'LYDKBQLO', 'hospital', 1);
 
 --
 -- Indexes for dumped tables
@@ -224,19 +234,19 @@ INSERT INTO `user` (`id`, `email`, `password`, `role`, `status`) VALUES
 -- Indexes for table `donar_organs`
 --
 ALTER TABLE `donar_organs`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`), ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `hosital_patient`
 --
 ALTER TABLE `hosital_patient`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`), ADD KEY `hospital_id` (`hospital_id`);
 
 --
 -- Indexes for table `hospital`
 --
 ALTER TABLE `hospital`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`), ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `organs`
@@ -248,7 +258,7 @@ ALTER TABLE `organs`
 -- Indexes for table `patient_request`
 --
 ALTER TABLE `patient_request`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`), ADD KEY `patient_id` (`patient_id`);
 
 --
 -- Indexes for table `personal_details`
@@ -276,12 +286,12 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `donar_organs`
 --
 ALTER TABLE `donar_organs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `hosital_patient`
 --
 ALTER TABLE `hosital_patient`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `hospital`
 --
@@ -296,25 +306,49 @@ ALTER TABLE `organs`
 -- AUTO_INCREMENT for table `patient_request`
 --
 ALTER TABLE `patient_request`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `personal_details`
 --
 ALTER TABLE `personal_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `requested_donar`
 --
 ALTER TABLE `requested_donar`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=22;
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `donar_organs`
+--
+ALTER TABLE `donar_organs`
+ADD CONSTRAINT `donar_organs_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `hosital_patient`
+--
+ALTER TABLE `hosital_patient`
+ADD CONSTRAINT `hosital_patient_ibfk_1` FOREIGN KEY (`hospital_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `hospital`
+--
+ALTER TABLE `hospital`
+ADD CONSTRAINT `hospital_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `patient_request`
+--
+ALTER TABLE `patient_request`
+ADD CONSTRAINT `patient_request_ibfk_1` FOREIGN KEY (`patient_id`) REFERENCES `hosital_patient` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `personal_details`

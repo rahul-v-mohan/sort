@@ -1,4 +1,12 @@
 
+jQuery(document).ready(function ($) {
+    $('.datefield').datepicker({
+        dateFormat: 'yy-mm-dd',
+        maxDate: 0,
+    });
+});
+
+
 function ajax_call(base_url,data,url) {
     jQuery.ajax({
         url: base_url +'/'+ url,

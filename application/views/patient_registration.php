@@ -60,7 +60,7 @@ $page_url = 'hospital/patient_registration';
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Date Of Birth <span class="mandatory">*</span></label>
-                                        <input type="text" class="form-control" id="dob" name="dob"  placeholder="DOB" value="<?php echo set_value('dob', $form_data['dob']); ?>">
+                                        <input type="text" class="form-control datefield" id="dob" name="dob"  placeholder="DOB" value="<?php echo set_value('dob', $form_data['dob']); ?>">
                                         <?php echo form_error('dob', '<label class ="error">', '</label>'); ?>
                                     </div>
                                 </div>
@@ -161,7 +161,7 @@ $page_url = 'hospital/patient_registration';
                                             <td><?php echo $row['hospital_name']; ?></td>
                                             <td><a href="<?php echo base_url($page_url . '/' . $row['id']); ?>"><button type="button" class="btn">Edit</button></a></td>
                                             <td>
-                                                <form method="post" action="<?php echo base_url('admin/hospital_delete'); ?>">
+                                                <form method="post" action="<?php echo base_url('hospital/patient_delete'); ?>">
                                                     <input type="hidden"  id="id" name="id"   value="<?php echo $row['id']; ?>"  >
                                                     <input type="hidden"  id="method" name="method"   value="delete"  >
                                                     <button type="submit" class="btn">Delete</button>

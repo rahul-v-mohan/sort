@@ -1,6 +1,6 @@
 jQuery(document).ready(function ($) {
     request_id = $("#request_id").val();
-    if(request_id != "" && request_id > 0){
+    if(request_id != "" ){
                   request_id =request_id.split("-");
             organ_id =request_id[1];
             request_id =request_id[0];
@@ -35,6 +35,22 @@ jQuery(document).ready(function ($) {
 function getrequest(base_url, data, url) {
     var html = "";
     var slno = 1;
+    // Date Calcultation
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = today.getMonth() + 1; //January is 0!
+    var yyyy = today.getFullYear();
+
+    if (dd < 10) {
+        dd = '0' + dd
+    }
+
+    if (mm < 10) {
+        mm = '0' + mm
+    }
+
+    today = yyyy + '-' + mm + '-' + dd;
+    // Date Calcultation End
     jQuery.ajax({
         url: base_url + '/' + url,
         dataType: 'json',
@@ -62,8 +78,8 @@ function getrequest(base_url, data, url) {
                     html += '<td>' + value['gender'] + '</td>';
                     html += '<td>' + value['location'] + '</td>';
                     html += '<td>' + value['blood_group'] + '</td>';
-                    html += '<td><input type="checkbox" value="1" name ="donar_request['+value['id']+']" /></td>';
-                    html += '<td><input type="text" class="form-control datepick" name ="requested_date['+value['id']+']" /></td>';
+                    html += '<td><input type="checkbox" value="1" name ="donar_request['+value['user_id']+']" /></td>';
+                    html += '<td><input type="text" class="form-control datepick" name ="requested_date['+value['user_id']+']" value="'+today+'" /></td>';
                     html += '</tr>';
                     slno++;
                 });

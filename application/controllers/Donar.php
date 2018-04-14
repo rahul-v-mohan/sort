@@ -8,7 +8,7 @@ class Donar extends CI_Controller {
 
     function __construct() {
         parent::__construct();
-//        $this->output->enable_profiler(TRUE);
+        $this->output->enable_profiler(TRUE);
         $this->load->model('common');
 
         $this->load->helper('rolemenu');
@@ -153,7 +153,28 @@ class Donar extends CI_Controller {
 
         $userdata = $this->session->userdata('USER'); 
         $id = $userdata['id']; 
-   
+        $fields = array(
+                'table1' => 'requested_donar RD',
+                'table2' => 'patient_request PD',
+                'table3' => 'organs O',
+                'table4' => 'hosital_patient HP',
+                'table5' => 'hospital H',
+                'condition2' => 'PD.id =  RD.request_id',
+                'condition3' => 'O.id = PD.organ_id',
+                'condition4' => 'HP.id = PD.patient_id',
+                'condition5' => 'H.user_id = HP.hospital_id',
+                'join2' => 'inner',
+                'join3' => 'inner',
+                'join4' => 'inner',
+                'join5' => 'inner',
+                'select' => 'RD.requested_date, RD.status,O.organ,H.*,HP.patient_name,HP.patient_id',
+                'where' => [ 'RD.donar_id'=> $id],
+                'where_in' => [], 'like' => [], 'group_by' => '',
+                'order_by' => 'RD.requested_date DESC', 'limit' => array());
+            
+            $data['requests'] = $this->common->table_details_join_five($fields)->result_array();
+
+
             
         $this->load->view('header_site.php', ['menu' => $this->menu, 'top_menu' => $this->menutop]);
         $this->load->view('request_view.php',$data);
