@@ -21,10 +21,6 @@ class Admin extends CI_Controller {
             $access = ($user_data['role'] == 'admin') ? 1 : 0;
         }
 
-        if (empty($access)) {
-            $this->session->set_flashdata('msg', 'Please Login');
-            redirect('home', 'refresh');
-        }
     }
 
     public function index() {

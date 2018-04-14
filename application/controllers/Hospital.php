@@ -37,7 +37,7 @@ class Hospital extends CI_Controller {
         $data['hospital_datas'] = [];
         $data['organ_allstatus'] = [1 => 'requested', 2 => 'closed'];
         if ($user_data['role'] == 'hospital') {
-            $data['hospital_datas'] = [$user_data['id'] => $user_data['hospital_name']];
+            $data['hospital_datas'] = [$user_data['id'] => $user_data['email']];
         }
         if ($user_data['role'] == 'admin') {
             $fields = array(

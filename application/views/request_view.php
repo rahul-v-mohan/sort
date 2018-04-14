@@ -38,7 +38,7 @@ $page_title = 'Request View';
                                 <?php
                                 foreach ($requests as $detail) {
                                     $arr = ["0" => 'Requested', "1" => 'Organ Matched', "2" => 'Rejected'];
-                                    echo (array_key_exists($detail['status'], $arr)) ? $arr[$detail['status']] : "";
+                                    $status = (array_key_exists($detail['status'], $arr)) ? $arr[$detail['status']] : "";
                                     ?>
                                     <tr>
                                         <td ><?php echo $detail['requested_date']; ?></td>
@@ -49,7 +49,7 @@ $page_title = 'Request View';
                                             ?></td>
                                         <td><?php echo $detail['patient_name'] . "</br>({$detail["patient_id"]})"; ?></td>
                                         <td><?php echo $detail['organ']; ?></td>
-                                        <td><?php // echo  ?></td>
+                                        <td><?php echo $status;  ?></td>
                                     </tr>
                                 <?php } ?>
 
